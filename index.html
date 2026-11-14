@@ -353,7 +353,7 @@ let availTimer=null;
 function loadAvail(){const key=[$("#start").value,nights(),$("#adults").value,$("#kids").value].join("|");if(key===st.availKey)return;st.availKey=key;st.avail=null;
  clearTimeout(availTimer);availTimer=setTimeout(async()=>{try{const r=await fetch(`${AVAIL_URL}?arrival=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}&children=${$("#kids").value}&lang=${st.lang}`);
   if(!r.ok)return;const j=await r.json();if(st.availKey!==key)return;const m={};(j.rooms||[]).forEach(x=>{const id=RTID[String(x.roomTypeId)]||boatIdFor(x.name);if(id)m[id]=x});if(!Object.keys(m).length)return;st.avail={map:m,ok:true};update()}catch(e){}},400)}
-function availOf(b){if(!st.avail)return undefined;const x=st.avail.map[b.id];return x?x.available:0}
+const DIRECT_RESERVE={"21":1};function availOf(b){if(!st.avail)return undefined;const x=st.avail.map[b.id];const v=x?x.available:0;const r=DIRECT_RESERVE[b.id]||0;if(r)return v>0?v+r:undefined;return v}
 function renderInterests(){
  $("#interests").innerHTML="";
  Object.entries(INTERESTS).forEach(([k,v])=>{const b=document.createElement("button");b.className="chip";b.textContent=v[li()];b.setAttribute("aria-pressed",st.interests.has(k));
