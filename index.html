@@ -320,7 +320,7 @@ const AVAIL_URL="https://htyyxhgbpegknsndocjy.supabase.co/functions/v1/availabil
 const $=s=>document.querySelector(s);
 const st={avail:null,availKey:"",lang:"en",interests:new Set(),boat:null,addons:new Set(["linen"]),qty:{},img:{},showAll:false};
 try{const l=localStorage.getItem("hb-lang");if(l)st.lang=l}catch(e){}
-if(navigator.language&&navigator.language.startsWith("de")&&!(()=>{try{return localStorage.getItem("hb-lang")}catch(e){return null}})())st.lang="de";
+if(navigator.language&&navigator.language.startsWith("de")&&!(()=>{try{return localStorage.getItem("hb-lang")}catch(e){return null}})())st.lang="de";try{const q=new URLSearchParams(location.search).get("lang");if(q==="de"||q==="en")st.lang=q}catch(e){}
 const L=()=>T[st.lang],li=()=>st.lang==="en"?0:1;
 const fmt=n=>st.lang==="de"?n.toLocaleString("de-DE",{maximumFractionDigits:2})+" €":"€"+n.toLocaleString("en-GB",{maximumFractionDigits:2});
 const addDays=(iso,n)=>{const d=new Date(iso+"T12:00");d.setDate(d.getDate()+n);return d};
