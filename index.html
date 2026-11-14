@@ -348,11 +348,11 @@ function renderStatic(){
   `<div><b>${st.lang==="de"?"Flüge nach Helsinki":"Flights to Helsinki"}</b><a id="flightLink" target="_blank" rel="noopener">Google Flights ↗</a></div>`;
  $("#bookBtn").textContent=L().book;$("#waBtn").textContent=L().wa;$("#reqBtn").textContent=L().req;$("#copyReq").textContent=L().copy;$("#bookNote").textContent=L().bookNote;$("#mBook").textContent=L().seeTrip;
 }
-function boatIdFor(name){const n=(name||"").toLowerCase();if(n.includes("spa"))return "24s";if(n.includes("42/8")||n.includes("42 8"))return "42-8";if(n.includes("42"))return "42-6";if(n.includes("36"))return "36";if(n.includes("24"))return "24";if(n.includes("21"))return "21";return null}
+const RTID={"116661":"21","122200":"24","122201":"24s","122199":"36","122202":"42-6","149447":"42-8"};function boatIdFor(name){const n=(name||"").toLowerCase();if(n.includes("spa"))return "24s";if(n.includes("42/8")||n.includes("42 8"))return "42-8";if(n.includes("42"))return "42-6";if(n.includes("36"))return "36";if(n.includes("24"))return "24";if(n.includes("21"))return "21";return null}
 let availTimer=null;
 function loadAvail(){const key=[$("#start").value,nights(),$("#adults").value,$("#kids").value].join("|");if(key===st.availKey)return;st.availKey=key;st.avail=null;
  clearTimeout(availTimer);availTimer=setTimeout(async()=>{try{const r=await fetch(`${AVAIL_URL}?arrival=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}&children=${$("#kids").value}&lang=${st.lang}`);
-  if(!r.ok)return;const j=await r.json();if(st.availKey!==key)return;const m={};(j.rooms||[]).forEach(x=>{const id=boatIdFor(x.name);if(id)m[id]=x});st.avail={map:m,ok:true};update()}catch(e){}},400)}
+  if(!r.ok)return;const j=await r.json();if(st.availKey!==key)return;const m={};(j.rooms||[]).forEach(x=>{const id=RTID[String(x.roomTypeId)]||boatIdFor(x.name);if(id)m[id]=x});if(!Object.keys(m).length)return;st.avail={map:m,ok:true};update()}catch(e){}},400)}
 function availOf(b){if(!st.avail)return undefined;const x=st.avail.map[b.id];return x?x.available:0}
 function renderInterests(){
  $("#interests").innerHTML="";
