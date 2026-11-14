@@ -362,7 +362,7 @@ function renderInterests(){
 function renderBoats(){
  const bb=best();if(!st.boat||BOATS.find(b=>b.id===st.boat).cap<people()||availOf(BOATS.find(b=>b.id===st.boat))===0)st.boat=bb?bb.id:null;
  $("#boats").innerHTML="";
- BOATS.forEach(b=>{const av=availOf(b),booked=av===0,off=b.cap<people()||booked,i=st.img[b.id]||0,el=document.createElement("div");
+ BOATS.forEach(b=>{const av=availOf(b),booked=av===0&&b.cap>=people(),off=b.cap<people()||booked,i=st.img[b.id]||0,el=document.createElement("div");
   el.className="boat"+(off?" off":"");el.setAttribute("role","button");el.setAttribute("aria-pressed",st.boat===b.id);
   el.innerHTML=`<div class="ph"><img src="${b.img[i]}" alt="${b.name}" loading="lazy">${bb&&bb.id===b.id?`<span class="tagwrap"><span class="tag rec">${L().fit}</span></span>`:""}${b.img.length>1?`<button class="nav">${i+1}/${b.img.length} ›</button>`:""}</div>
   <div class="bd"><b>${b.name}</b><span class="meta">${L().upto} ${b.cap} · ${b[st.lang]}</span>
