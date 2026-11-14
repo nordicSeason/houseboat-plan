@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Houseboat.fi — Trip Builder (prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LodgingBusiness","name":"Houseboat Finland (houseboat.fi)","url":"https://houseboat.fi","telephone":"+358 40 164 6168","email":"info@houseboat.fi",
+"address":{"@type":"PostalAddress","streetAddress":"Satamatie 4","postalCode":"18100","addressLocality":"Heinola","addressCountry":"FI"},
+"description":"Self-drive houseboat rental on Lake Päijänne, Finland. No licence needed, 1-hour skipper training included, wood-fired sauna on every boat. Season 1 May – 31 October 2027. Prices per boat per day incl. 25.5 % VAT. Minimum 3 days. Damage deposit 2,500 EUR by card. Fuel not included (boat handed over and returned with full tanks).",
+"checkinTime":"15:00","checkoutTime":"10:00","petsAllowed":true,
+"makesOffer":[
+{"@type":"Offer","name":"21/4 Eco Houseboat, 2+2 persons","priceCurrency":"EUR","price":"465","description":"Per boat per night Mon–Thu; Fri–Sun 620"},
+{"@type":"Offer","name":"24/4 Luxe Houseboat, 2+2 persons","priceCurrency":"EUR","price":"555","description":"Per boat per night Mon–Thu; Fri–Sun 740"},
+{"@type":"Offer","name":"24/4 Luxe Spa Houseboat with hot tub, 2+2 persons","priceCurrency":"EUR","price":"615","description":"Per boat per night Mon–Thu; Fri–Sun 820"},
+{"@type":"Offer","name":"36/6 Eco Houseboat, 4+2 persons","priceCurrency":"EUR","price":"690","description":"Per boat per night Mon–Thu; Fri–Sun 920"},
+{"@type":"Offer","name":"42/6 and 42/8 DeLuxe Houseboat, 4+2 or 6+2 persons","priceCurrency":"EUR","price":"810","description":"Per boat per night Mon–Thu; Fri–Sun 1080"}]}
+</script>
+<script type="application/json" id="offer-json"></script>
+<style>
+:root{--ink:#14262f;--muted:#5b6f78;--line:#d9e2e4;--bg:#f4f1ea;--card:#fffdf8;--lake:#1f5f74;--lake2:#e3eef0;--ok:#2f7a4f;--partner:#7a5aa6;--partner2:#efe9f6;--warn:#9a3b1a}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.45}
+header{position:relative;color:#fff;padding:26px 20px 42px;background:#1f5f74 url(https://houseboat.fi/img/a4135ab69f432619.webp) center 60%/cover}
+header:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,35,45,.82),rgba(10,35,45,.35))}
+header .wrap{position:relative;max-width:1000px;margin:0 auto}
+header small{display:block;padding-right:96px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;font-size:12px}
+h1{font-family:Fraunces,serif;font-weight:650;font-size:clamp(28px,5vw,44px);margin:6px 0;max-width:640px}
+header p{margin:0;max-width:600px;opacity:.95}
+.usp{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.usp span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:4px 11px;font-size:13px}
+.lang{position:absolute;right:0;top:0;display:flex;gap:4px}
+.lang button{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:7px;padding:4px 9px;font:600 12px Inter;cursor:pointer}
+.lang button[aria-pressed=true]{background:#fff;color:var(--lake)}
+main{max-width:1000px;margin:-22px auto 40px;padding:0 14px;display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start;position:relative}
+@media(max-width:840px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;margin-bottom:16px}
+.card h2{font-family:Fraunces,serif;font-weight:500;font-size:21px;margin:0 0 4px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.step{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--lake);color:#fff;font:600 13px Inter}
+.hint{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+label{font-size:13px;font-weight:500;color:var(--muted);display:block;margin-bottom:5px}
+input,select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;font:inherit;background:#fff;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--lake);border-color:var(--lake);color:#fff}
+.boats{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.boat{border:1.5px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;overflow:hidden;display:flex;flex-direction:column}
+.boat[aria-pressed=true]{border-color:var(--lake);box-shadow:0 0 0 3px var(--lake2)}
+.boat.off{opacity:.45;cursor:not-allowed}
+.boat .ph{position:relative;aspect-ratio:3/2;background:#cfdfe3}
+.boat .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.boat .ph .nav{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:6px;font:600 12px Inter;padding:4px 8px;cursor:pointer}
+.boat .ph .tagwrap{position:absolute;left:8px;top:8px}
+.boat .bd{padding:11px 12px 13px}
+.boat b{display:block;font-size:16px}
+.boat .meta{font-size:13px;color:var(--muted)}
+.boat .p{font-weight:650;font-size:17px;margin-top:8px}
+.boat .r{font-size:12.5px;color:var(--muted)}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:5px}
+.tag.rec{background:#fbeeda;color:#9a5a10}
+.tag.us{background:var(--lake2);color:var(--lake)}
+.tag.pt{background:var(--partner2);color:var(--partner)}
+.addon{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);margin:0;color:var(--ink);font-size:14.5px;font-weight:400}
+.addon:last-child{border-bottom:0}
+.addon input[type=checkbox]{width:auto}
+.addon .n{flex:1}
+.addon .n small{display:block;color:var(--muted)}
+.addon select{width:auto;padding:4px 6px}
+.more{background:none;border:0;color:var(--lake);font:600 14px Inter;cursor:pointer;padding:8px 0 0}
+.routehead{border-radius:12px;overflow:hidden;position:relative;margin-bottom:10px}
+.routehead img{width:100%;height:170px;object-fit:cover;display:block}
+.routehead div{position:absolute;left:0;right:0;bottom:0;padding:12px 14px;background:linear-gradient(transparent,rgba(0,0,0,.65));color:#fff}
+.routehead b{font:600 19px Fraunces,serif;display:block}
+.day{display:grid;grid-template-columns:58px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.day:last-child{border-bottom:0}
+.day .d{font:600 12px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.day .d b{display:block;font:600 20px Fraunces,serif;color:var(--ink);letter-spacing:0}
+.day h3{margin:0 0 2px;font-size:15.5px}
+.day p{margin:0;font-size:14px;color:var(--muted)}
+.tips{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.tips span{font-size:12px;background:var(--lake2);color:var(--lake);border-radius:6px;padding:2px 7px}
+.terms{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:14px}
+@media(max-width:600px){.terms{grid-template-columns:1fr}}
+.terms h4{margin:8px 0 2px;font-size:14px}
+.terms ul{margin:0;padding-left:18px;color:var(--muted)}
+.key{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px}
+.key div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font-size:13px;color:var(--muted)}
+.key b{display:block;color:var(--ink);font-size:15px}
+a.btn,button.btn{display:inline-block;background:var(--lake);color:#fff;text-decoration:none;border:0;border-radius:9px;padding:11px 14px;font:600 14px Inter;cursor:pointer;text-align:center}
+a.btn.ghost,button.btn.ghost{background:#fff;color:var(--lake);border:1px solid var(--lake)}
+a.btn.wa{background:#1f8f4e}
+aside{position:sticky;top:14px}
+.sum .line{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:4px 0}
+.sum .tot{border-top:2px solid var(--ink);margin-top:8px;padding-top:10px;font-weight:650;font-size:18px}
+.sum .sm{font-size:12.5px;color:var(--muted);margin-top:4px}
+.sum .ctas{display:grid;gap:8px;margin-top:14px}
+.onreq{font-size:13px;color:var(--muted)}
+.warn{color:var(--warn);font-size:13px;margin:8px 0 0}
+textarea{width:100%;min-height:150px;border:1px solid var(--line);border-radius:9px;padding:10px;font:13.5px Inter;color:var(--ink)}
+details.after{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:16px}
+details.after summary{font:500 18px Fraunces,serif;cursor:pointer}
+.ideas{display:grid;gap:10px;margin-top:10px}
+.ideas div{border-left:3px solid var(--partner);padding:2px 0 2px 10px;font-size:14px}
+.ideas b{display:block}
+.ideas a{color:var(--partner);font-size:13px;margin-right:10px}
+.note{background:#fff7e8;border:1px solid #f0d9ae;border-radius:12px;padding:12px 14px;font-size:13px;color:#6b4a14}
+#mbar{display:none}
+@media(max-width:840px){#mbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 14px;justify-content:space-between;align-items:center;font-weight:600;z-index:5;gap:10px}body{padding-bottom:66px}aside{position:static}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="lang"><button data-l="en">EN</button><button data-l="de">DE</button></div>
+  <small data-t="kicker"></small>
+  <h1 data-t="title"></h1>
+  <p data-t="lead"></p>
+  <div class="usp"><span data-t="usp1"></span><span data-t="usp2"></span><span data-t="usp3"></span><span data-t="usp4"></span></div>
+</div></header>
+
+<main>
+<div>
+  <section class="card">
+    <h2><span class="step">1</span><span data-t="s1"></span></h2>
+    <p class="hint" data-t="s1h"></p>
+    <div class="row">
+      <div><label for="start" data-t="start"></label><input id="start" type="date" min="2027-05-01" max="2027-10-28"></div>
+      <div><label for="nights" data-t="nights"></label><select id="nights"></select></div>
+      <div><label for="adults" data-t="adults"></label><select id="adults"></select></div>
+      <div><label for="kids" data-t="kids"></label><select id="kids"></select></div>
+      <div><label for="dog" data-t="pet"></label><select id="dog"><option value="0" data-t="no"></option><option value="1" data-t="yes"></option></select></div>
+    </div>
+    <p class="warn" id="seasonWarn" hidden></p>
+    <label style="margin-top:14px" data-t="love"></label>
+    <div class="chips" id="interests"></div>
+  </section>
+
+  <section class="card">
+    <h2><span class="step">2</span><span data-t="s2"></span></h2>
+    <p class="hint" data-t="s2h"></p>
+    <label class="addon" style="border:0;padding:0 0 12px"><input type="checkbox" id="early" checked><span class="n"><span data-t="eb"></span><small data-t="ebh"></small></span></label>
+    <div class="boats" id="boats"></div>
+  </section>
+
+  <section class="card">
+    <h2><span class="step">3</span><span data-t="s3"></span></h2>
+    <p class="hint" data-t="s3h"></p>
+    <div id="addons"></div>
+    <button class="more" id="moreBtn"></button>
+  </section>
+
+  <section class="card">
+    <h2><span class="step">4</span><span data-t="s4"></span></h2>
+    <div class="routehead"><img src="https://houseboat.fi/img/f17e366c7bdd7855.webp" alt=""><div><b id="routeTitle"></b><span id="routeSub"></span></div></div>
+    <p class="hint" data-t="s4h"></p>
+    <div id="plan"></div>
+  </section>
+
+  <section class="card">
+    <h2><span class="step">5</span><span data-t="s5"></span></h2>
+    <div class="key">
+      <div><b data-t="k1"></b><span data-t="k1s"></span></div>
+      <div><b data-t="k2"></b><span data-t="k2s"></span></div>
+      <div><b data-t="k3"></b><span data-t="k3s"></span></div>
+      <div><b data-t="k4"></b><span data-t="k4s"></span></div>
+    </div>
+    <div class="terms">
+      <div><h4 data-t="inc"></h4><ul id="incList"></ul></div>
+      <div><h4 data-t="exc"></h4><ul id="excList"></ul></div>
+      <div><h4 data-t="arr"></h4><ul id="arrList"></ul></div>
+      <div><h4 data-t="canc"></h4><ul id="cancList"></ul></div>
+      <div><h4 data-t="rules"></h4><ul id="ruleList"></ul></div>
+      <div><h4 data-t="onb"></h4><ul id="onbList"></ul></div>
+      <div><h4 data-t="brg"></h4><ul id="brgList"></ul></div>
+    </div>
+  </section>
+
+  <details class="after">
+    <summary data-t="after"></summary>
+    <p class="hint" style="margin-top:8px" data-t="afterh"></p>
+    <div class="ideas" id="ideas"></div>
+  </details>
+</div>
+
+<aside>
+  <section class="card sum" id="sumCard">
+    <h2 data-t="trip"></h2>
+    <div id="sum"></div>
+    <div class="ctas">
+      <a class="btn" id="bookBtn" target="_blank" rel="noopener"></a>
+      <a class="btn wa" id="waBtn" target="_blank" rel="noopener"></a>
+      <button class="btn ghost" id="reqBtn"></button>
+    </div>
+    <p class="sm" id="bookNote"></p>
+    <div id="req" hidden style="margin-top:10px">
+      <label for="reqText" data-t="reqlabel"></label>
+      <textarea id="reqText" readonly></textarea>
+      <button class="btn ghost" id="copyReq" style="margin-top:8px"></button>
+    </div>
+  </section>
+  <div class="note"><b>Prototype — owner notes.</b> Prices: Houseboat-Finland Pricelist 2027 (matches booking engine 14.11.2026). Terms: Rental Guide 2027. Routes: Cruising routes 2027. Packing list: Rental Guide 2027 (+ swimwear/sun cream, plug adapter added). Photos: agency photo pack. "Book online" opens houseboat.fi booking with dates and adults pre-filled (tested). Live availability: Supabase function "availability" → Exely Search API (needs EXELY_CLIENT_ID / EXELY_CLIENT_SECRET secrets; blocked inside this preview, works on houseboat.fi). Payment & cancellation: from Exely (Early Bird settings + "Main rule" cancellation policy, 14.11.2026).</div>
+</aside>
+</main>
+<div id="mbar"><span id="mtot"></span><a class="btn" id="mBook" target="_blank" rel="noopener"></a></div>
+
+<script>
+const T={
+en:{kicker:"Houseboat Finland · Heinola · Lake Päijänne",title:"Plan your houseboat week on the Finnish lakes",lead:"Pick your dates, see the full price of every boat at once, and get a day-by-day route from our harbour team.",
+usp1:"No licence needed",usp2:"Wood-fired sauna on every boat",usp3:"Price per boat, not per person",usp4:"★ 4.7 on Google",
+s1:"When and who",s1h:"Season 1 May – 31 October 2027. Check-in any day 15:00–18:00, check-out by 10:00. Minimum 3 nights.",
+start:"Check-in date",nights:"Nights",adults:"Adults",kids:"Children",pet:"Pet on board",no:"No",yes:"Yes",love:"What do you enjoy? (optional)",
+s2:"Choose your houseboat",s2h:"Full price for your dates, incl. 25.5 % VAT. Fri, Sat and Sun nights cost more than weekdays. Tap a photo for more.",
+eb:"Early Bird 2027 – 10 % off",ebh:"Current offer on our booking page. Same cancellation terms as the standard rate — see Good to know.",
+fit:"Best fit",upto:"Up to",forN:"for {n} nights",wd:"Mon–Thu",we:"Fri–Sun",toosmall:"Too small for your group",booked:"Booked for these dates — try other dates",last1:"Last one left",leftN:"{n} left",over8:"More than 8 guests: take two boats and travel together. Write to us.",
+s3:"Extras",s3h:"Already included: final cleaning, sauna firewood (1 bag), dinghy for going ashore, 1-hour skipper training, Wi-Fi.",showAll:"Show all extras",showLess:"Show fewer",onreq:"on request",days:"days",forYou:"For you",
+s4:"Your route",s4h:"An example from our harbour team. We adapt it to you and the weather at handover; plan 3–4 hours on the water a day.",
+s5:"Good to know",k1:"€2,500",k1s:"Damage deposit, by card at boarding, refunded in 7–14 days",k2:"Fuel extra",k2s:"Boat comes with full tanks; return it full",k3:"18+",k3s:"Skipper's minimum age; no licence needed",k4:"€140",k4s:"Pets welcome — hypoallergenic cleaning per booking",
+inc:"Included",exc:"Not included",arr:"Getting here",rules:"On the water",
+incL:["The houseboat with all its equipment","1-hour skipper training and safety briefing","Navigation tablet with charts, plus paper maps — we load your route","Small inflatable dinghy (3 m, up to 4 people)","Gas for cooking, 1 bag of sauna firewood","Phone / WhatsApp support during your trip","Final cleaning, 25.5 % VAT"],
+excL:["Fuel (return the boat with full tanks)","Bed linen and towels (€30 per person)","Extra equipment: SUP, kayak, RIB, bikes, fishing tackle","Food — shops along the route; kitchen fully equipped"],
+arrL:["Harbour: Satamatie 4, 18100 Heinola, 1 km from the town centre","By car: about 140 km from Helsinki Airport via E75 (about 1.5 h)","By bus: direct buses from Helsinki Airport to Heinola (matkahuolto.fi)","Parking at the harbour; EV fast charging at K-Citymarket nearby"],
+ruleL:["Speed 6–7 km/h — slow travel","Wind over 8 m/s: stay moored","National park: max 2 nights per harbour, fires only at marked sites","Dogs on a lead 1 March – 19 August","At least 2 people per boat recommended"],
+canc:"Payment and cancellation",cancL:["Pay by card in full when booking, or 30 % by card if you book at least 30 days ahead","Bank transfer on invoice also possible","Cancel more than 30 days before arrival: you pay only the first night","Cancel within 30 days of arrival: no refund of the prepayment","Same terms for the standard rate and Early Bird"],
+onb:"Already on board",brg:"Bring with you",
+onbL:["Fully equipped kitchen: cookware, dishes, cutlery, coffee machine/kettle","Pillows and blankets","Toilet paper, hand soap, eco shampoo and shower gel","Dishwashing liquid and cleaning supplies","Insect protection","230 V power, heating, hot water, free Wi-Fi","Life jackets and safety equipment"],
+brgL:["Food — shops along the way, no need to buy everything at once","Coffee or tea, coffee filters, spices, cooking oil","Bed linen and towels — or rent them from us (€30 per person)","Bottled drinking water (tap water is filtered lake water, fine for boiling)","Warm and waterproof clothes — it is cooler on the water","Swimwear, sunglasses, sun cream","Personal toiletries and medicines","Plug adapter if you come from outside the EU","Fishing gear — or rent it from us"],
+after:"After the boat: more of Finland",afterh:"Booked separately with each provider — ideas for the days around your houseboat week.",
+trip:"Your trip",withUs:"Total with Houseboat Finland",deposit:"+ €2,500 deposit (refunded) · fuel extra",book:"Book online",wa:"Ask on WhatsApp",req:"Request by e-mail",copy:"Copy",copied:"Copied",
+reqlabel:"Your request (copy and send to info@houseboat.fi)",bookNote:"Opens our booking page with your dates and adults filled in. Add children and choose your boat there.",
+nightsL:"nights",guests:"{a} adults, {k} children",pet1:", 1 pet",petClean:"Cleaning after pet",early:"−10 %",
+warnSeason:"Our 2027 season runs 1 May – 31 October. Please pick dates inside it.",seeTrip:"Book",
+mail:"Hello Houseboat Finland,\n\nI'd like to book {boat} from {d} for {n} nights.\nGuests: {g}.\nExtras: {x}.\nInterests: {i}.\nEstimated total: {t}.\n\nPlease confirm availability.\n"},
+de:{kicker:"Houseboat Finland · Heinola · Päijänne-See",title:"Planen Sie Ihre Hausboot-Woche auf den finnischen Seen",lead:"Wählen Sie Ihre Daten, sehen Sie sofort den Gesamtpreis jedes Bootes und erhalten Sie eine Route von unserem Hafenteam.",
+usp1:"Kein Bootsführerschein nötig",usp2:"Holzsauna auf jedem Boot",usp3:"Preis pro Boot, nicht pro Person",usp4:"★ 4,7 bei Google",
+s1:"Wann und wer",s1h:"Saison 1. Mai – 31. Oktober 2027. Anreise täglich 15–18 Uhr, Abreise bis 10 Uhr. Mindestens 3 Nächte.",
+start:"Anreisedatum",nights:"Nächte",adults:"Erwachsene",kids:"Kinder",pet:"Haustier an Bord",no:"Nein",yes:"Ja",love:"Was mögen Sie? (optional)",
+s2:"Wählen Sie Ihr Hausboot",s2h:"Gesamtpreis für Ihre Daten inkl. 25,5 % MwSt. Fr-, Sa- und So-Nächte kosten mehr als Wochentage. Foto antippen für mehr Bilder.",
+eb:"Frühbucher 2027 – 10 % Rabatt",ebh:"Aktuelles Angebot auf unserer Buchungsseite. Gleiche Stornobedingungen wie der Standardtarif — siehe Gut zu wissen.",
+fit:"Passt am besten",upto:"Bis",forN:"für {n} Nächte",wd:"Mo–Do",we:"Fr–So",toosmall:"Zu klein für Ihre Gruppe",booked:"Für diese Daten ausgebucht — andere Daten wählen",last1:"Nur noch 1 frei",leftN:"Noch {n} frei",over8:"Mehr als 8 Gäste: zwei Boote, gemeinsam unterwegs. Schreiben Sie uns.",
+s3:"Extras",s3h:"Bereits inklusive: Endreinigung, Saunaholz (1 Sack), Beiboot für Landgänge, 1 Stunde Skipper-Einweisung, WLAN.",showAll:"Alle Extras zeigen",showLess:"Weniger zeigen",onreq:"auf Anfrage",days:"Tage",forYou:"Für Sie",
+s4:"Ihre Route",s4h:"Ein Beispiel unseres Hafenteams. Wir passen sie bei der Übergabe an Sie und das Wetter an; rechnen Sie mit 3–4 Stunden auf dem Wasser pro Tag.",
+s5:"Gut zu wissen",k1:"2.500 €",k1s:"Kaution, per Karte bei Übergabe, Rückerstattung in 7–14 Tagen",k2:"Treibstoff extra",k2s:"Boot mit vollen Tanks übernehmen und voll zurückgeben",k3:"18+",k3s:"Mindestalter des Skippers; kein Führerschein nötig",k4:"140 €",k4s:"Haustiere willkommen — hypoallergene Reinigung pro Buchung",
+inc:"Inklusive",exc:"Nicht inklusive",arr:"Anreise",rules:"Auf dem Wasser",
+incL:["Das Hausboot mit gesamter Ausstattung","1 Stunde Skipper-Einweisung und Sicherheitsbriefing","Navigationstablet mit Seekarten plus Papierkarten — wir laden Ihre Route","Kleines Schlauchboot (3 m, bis 4 Personen)","Gas zum Kochen, 1 Sack Saunaholz","Telefon-/WhatsApp-Support während der Reise","Endreinigung, 25,5 % MwSt."],
+excL:["Treibstoff (Boot mit vollen Tanks zurückgeben)","Bettwäsche und Handtücher (30 € pro Person)","Zusatzausrüstung: SUP, Kajak, RIB, Fahrräder, Angelausrüstung","Lebensmittel — Geschäfte unterwegs; Küche voll ausgestattet"],
+arrL:["Hafen: Satamatie 4, 18100 Heinola, 1 km vom Zentrum","Mit dem Auto: ca. 140 km vom Flughafen Helsinki über die E75 (ca. 1,5 Std.)","Mit dem Bus: Direktbusse vom Flughafen Helsinki nach Heinola (matkahuolto.fi)","Parken am Hafen; E-Schnellladen am nahen K-Citymarket"],
+ruleL:["Geschwindigkeit 6–7 km/h — langsames Reisen","Wind über 8 m/s: im Hafen bleiben","Nationalpark: max. 2 Nächte pro Hafen, Feuer nur an markierten Stellen","Hunde an der Leine vom 1. März bis 19. August","Mindestens 2 Personen pro Boot empfohlen"],
+canc:"Zahlung und Storno",cancL:["Zahlung per Karte vollständig bei Buchung, oder 30 % per Karte bei Buchung mindestens 30 Tage vor Anreise","Überweisung auf Rechnung ebenfalls möglich","Storno mehr als 30 Tage vor Anreise: Sie zahlen nur die erste Nacht","Storno innerhalb von 30 Tagen vor Anreise: keine Erstattung der Vorauszahlung","Gleiche Bedingungen für Standardtarif und Frühbucher"],
+onb:"Schon an Bord",brg:"Mitbringen",
+onbL:["Voll ausgestattete Küche: Töpfe, Geschirr, Besteck, Kaffeemaschine/Wasserkocher","Kissen und Decken","Toilettenpapier, Handseife, Öko-Shampoo und Duschgel","Spülmittel und Reinigungsmittel","Insektenschutz","230 V Strom, Heizung, Warmwasser, kostenloses WLAN","Rettungswesten und Sicherheitsausrüstung"],
+brgL:["Lebensmittel — unterwegs gibt es Geschäfte, nicht alles auf einmal kaufen","Kaffee oder Tee, Kaffeefilter, Gewürze, Speiseöl","Bettwäsche und Handtücher — oder bei uns mieten (30 € pro Person)","Trinkwasser in Flaschen (Leitungswasser ist gefiltertes Seewasser, zum Abkochen geeignet)","Warme und wasserdichte Kleidung — auf dem Wasser ist es kühler","Badesachen, Sonnenbrille, Sonnencreme","Persönliche Pflegeartikel und Medikamente","Steckeradapter, falls Sie von außerhalb der EU kommen","Angelausrüstung — oder bei uns mieten"],
+after:"Nach dem Boot: mehr von Finnland",afterh:"Separat beim jeweiligen Anbieter zu buchen — Ideen für die Tage rund um Ihre Hausboot-Woche.",
+trip:"Ihre Reise",withUs:"Gesamt bei Houseboat Finland",deposit:"+ 2.500 € Kaution (zurück) · Treibstoff extra",book:"Online buchen",wa:"Per WhatsApp fragen",req:"Per E-Mail anfragen",copy:"Kopieren",copied:"Kopiert",
+reqlabel:"Ihre Anfrage (kopieren und an info@houseboat.fi senden)",bookNote:"Öffnet unsere Buchungsseite mit Ihren Daten und Erwachsenen. Kinder und Boot wählen Sie dort.",
+nightsL:"Nächte",guests:"{a} Erwachsene, {k} Kinder",pet1:", 1 Haustier",petClean:"Reinigung nach Haustier",early:"−10 %",
+warnSeason:"Unsere Saison 2027 läuft vom 1. Mai bis 31. Oktober. Bitte wählen Sie Daten in diesem Zeitraum.",seeTrip:"Buchen",
+mail:"Hallo Houseboat Finland,\n\nich möchte {boat} ab {d} für {n} Nächte buchen.\nGäste: {g}.\nExtras: {x}.\nInteressen: {i}.\nGeschätzter Gesamtpreis: {t}.\n\nBitte bestätigen Sie die Verfügbarkeit.\n"}
+};
+const BOATS=[
+ {id:"21",name:"21/4 Eco",cap:4,wd:465,we:620,img:["https://houseboat.fi/img/daa20416e9c08f63.webp","https://houseboat.fi/img/5cd6072240b40fb9.webp","https://houseboat.fi/img/540a2e6694ed83a1.webp"],en:"1 bedroom + sofa bed · 21 m² · fireplace",de:"1 Schlafzimmer + Schlafsofa · 21 m² · Kamin"},
+ {id:"24",name:"24/4 Luxe",cap:4,wd:555,we:740,img:["https://houseboat.fi/img/7c1104aadc30eb3f.webp","https://houseboat.fi/img/5cd6072240b40fb9.webp","https://houseboat.fi/img/540a2e6694ed83a1.webp"],en:"1 bedroom + sofa bed · 24 m² · premium kitchen",de:"1 Schlafzimmer + Schlafsofa · 24 m² · Premium-Küche"},
+ {id:"24s",name:"24/4 Luxe Spa",cap:4,wd:615,we:820,img:["https://houseboat.fi/img/66dfe5e7fa3eaa9a.webp","https://houseboat.fi/img/5cd6072240b40fb9.webp","https://houseboat.fi/img/540a2e6694ed83a1.webp"],en:"As 24/4 Luxe + outdoor hot tub",de:"Wie 24/4 Luxe + Whirlpool an Deck"},
+ {id:"36",name:"36/6 Eco",cap:6,wd:690,we:920,img:["https://houseboat.fi/img/dadf5574573ad908.webp","https://houseboat.fi/img/5cd6072240b40fb9.webp","https://houseboat.fi/img/540a2e6694ed83a1.webp"],en:"2 bedrooms + sofa bed · 36 m² · fireplace",de:"2 Schlafzimmer + Schlafsofa · 36 m² · Kamin"},
+ {id:"42-6",name:"42/6 DeLuxe",cap:6,wd:810,we:1080,img:["https://houseboat.fi/img/3208cb029c75c3c8.webp","https://houseboat.fi/img/5cd6072240b40fb9.webp","https://houseboat.fi/img/540a2e6694ed83a1.webp"],en:"2 bedrooms + sofa bed · 42 m² · 30 m² roof terrace",de:"2 Schlafzimmer + Schlafsofa · 42 m² · 30 m² Dachterrasse"},
+ {id:"42-8",name:"42/8 DeLuxe",cap:8,wd:810,we:1080,img:["https://houseboat.fi/img/6a619ea5c3fb81d5.webp","https://houseboat.fi/img/5cd6072240b40fb9.webp","https://houseboat.fi/img/540a2e6694ed83a1.webp"],en:"2 bedrooms (one with 4 singles) + sofa bed · 42 m² · roof terrace",de:"2 Schlafzimmer (eines mit 4 Einzelbetten) + Schlafsofa · 42 m² · Dachterrasse"}
+];
+const ADDONS=[
+ {id:"linen",price:30,unit:"person",tags:["*"],en:["Bed linen and towels","€30 per person"],de:["Bettwäsche und Handtücher","30 € pro Person"]},
+ {id:"sup",price:25,unit:"day",max:4,tags:["active","kids"],en:["SUP board","€25 per day"],de:["SUP-Board","25 € pro Tag"]},
+ {id:"kayak",price:25,unit:"day",max:4,tags:["active","nature"],en:["Inflatable kayak, 1–2 persons","€25 per day"],de:["Schlauchkajak, 1–2 Personen","25 € pro Tag"]},
+ {id:"bike",price:25,unit:"day",max:8,tags:["active"],en:["Bike (fat, mountain or touring)","€25 per day"],de:["Fahrrad (Fatbike, MTB oder Trekking)","25 € pro Tag"]},
+ {id:"dinghy",price:42,unit:"day",max:1,tags:["nature","kids","fishing"],en:["Inflatable dinghy, 2.5 hp outboard","€42 per day"],de:["Schlauchboot mit 2,5-PS-Motor","42 € pro Tag"]},
+ {id:"rib",price:85,unit:"day",max:1,tags:["fishing"],en:["Aluminium RIB, 9.9 / 15 hp outboard","€85 per day"],de:["Aluminium-RIB mit 9,9/15-PS-Motor","85 € pro Tag"]},
+ {id:"fishing",price:null,tags:["fishing"],en:["Fishing tackle, licence or local guide","For every level"],de:["Angelausrüstung, Lizenz oder Guide","Für jedes Niveau"]},
+ {id:"wood",price:15,unit:"each",max:6,tags:["sauna"],en:["Extra sauna firewood","€15 per 40 l bag"],de:["Zusätzliches Saunaholz","15 € pro 40-l-Sack"]},
+ {id:"earlyin",price:100,unit:"each",max:3,tags:[],en:["Earlier check-in (before 15:00)","€100 per hour"],de:["Frühere Anreise (vor 15 Uhr)","100 € pro Stunde"]},
+ {id:"latein",price:100,unit:"once",tags:[],en:["Later check-in (18:00–20:00)","€100"],de:["Spätere Anreise (18–20 Uhr)","100 €"]},
+ {id:"late",price:100,unit:"each",max:3,tags:[],en:["Later check-out (after 10:00)","€100 per hour"],de:["Spätere Abreise (nach 10 Uhr)","100 € pro Stunde"]},
+ {id:"skipper",price:75,unit:"each",max:3,tags:[],en:["Extra skipper training","€75 per hour"],de:["Zusätzliche Skipper-Einweisung","75 € pro Stunde"]}
+];
+const INTERESTS={sauna:["Sauna & swimming","Sauna & Baden"],fishing:["Fishing","Angeln"],nature:["Nature & national park","Natur & Nationalpark"],active:["Paddling & cycling","Paddeln & Radfahren"],kids:["Travelling with kids","Mit Kindern"],food:["Local food","Regionale Küche"],golf:["Golf","Golf"]};
+const TIPS={sauna:["Evening sauna, then the lake","Abends Sauna, dann in den See"],fishing:["Pike & perch in the reedy bays","Hecht & Barsch in den Schilfbuchten"],nature:["Ridge walk & berry picking","Wanderung auf dem Os & Beeren pflücken"],active:["SUP or kayak in a quiet bay","SUP oder Kajak in einer ruhigen Bucht"],kids:["Sandy beach & dinghy trips","Sandstrand & Beiboot-Ausflüge"],food:["Farm shop: berries, liqueurs","Hofladen: Beeren, Liköre"],golf:["Vierumäki golf, 4 km from a mooring","Golf Vierumäki, 4 km vom Anleger"]};
+// Routes from "Cruising area & suggested routes 2027"
+const R={
+short:{t:["Lake Ruotsalainen short break","Kurzurlaub auf dem Ruotsalainen"],s:["A first taste of houseboat life","Der erste Vorgeschmack aufs Hausbootleben"],
+ d:[["Check-in & first evening","Check-in 15–18, skipper training, short cruise to a quiet bay, first sauna and a swim.","Ankunft & erster Abend","Check-in 15–18 Uhr, Einweisung, kurze Fahrt in eine ruhige Bucht, erste Sauna und ein Bad.",["sauna"]],
+    ["Islands of Lake Ruotsalainen","Swimming, SUP or kayak, fishing among the islands and bays.","Inseln des Ruotsalainen","Baden, SUP oder Kajak, Angeln zwischen Inseln und Buchten.",["active","fishing","kids"]],
+    ["Another bay, another island","Lunch on deck, evening sauna; white nights in June and July.","Neue Bucht, neue Insel","Mittagessen an Deck, Abendsauna; weiße Nächte im Juni und Juli.",["sauna","nature"]]]},
+mid:{t:["Through the Kalkkinen lock to Päijänne","Durch die Kalkkinen-Schleuse zum Päijänne"],s:["Canal, lock and the first ridge islands","Kanal, Schleuse und die ersten Os-Inseln"],
+ d:[["Check-in & Lake Ruotsalainen","Skipper training, first evening on Lake Ruotsalainen.","Check-in & Ruotsalainen","Einweisung, erster Abend auf dem Ruotsalainen.",["sauna"]],
+    ["West to the Kalkkinen canal","A day's cruise along the waterway; farm shop at Kalkkinen.","Westwärts zum Kalkkinen-Kanal","Ein Tag auf dem Wasserweg; Hofladen in Kalkkinen.",["food"]],
+    ["Onto Lake Päijänne","Through the lock — Pulkkilanharju ridge islands, beaches and a walk on the ridge.","Auf den Päijänne","Durch die Schleuse — Os-Inseln von Pulkkilanharju, Strände und ein Spaziergang auf dem Os.",["nature","kids"]],
+    ["Back through the lock","Mooring on the quiet waters east of the canal.","Zurück durch die Schleuse","Übernachtung auf den ruhigen Gewässern östlich des Kanals.",["fishing","golf"]],
+    ["Last bay on Ruotsalainen","A last bay, last sauna evening.","Letzte Bucht auf dem Ruotsalainen","Eine letzte Bucht, ein letzter Saunaabend.",["sauna","active"]]]},
+long:{t:["Päijänne National Park & Kelvenne","Nationalpark Päijänne & Kelvenne"],s:["The full experience — our recommendation","Das volle Erlebnis — unsere Empfehlung"],
+ d:[["Check-in & evening sauna","Skipper training, first night close to the harbour.","Check-in & Abendsauna","Einweisung, erste Nacht nahe dem Hafen.",["sauna"]],
+    ["Lake Ruotsalainen","A quiet bay for the night.","Ruotsalainen","Eine ruhige Bucht für die Nacht.",["fishing","active"]],
+    ["Kalkkinen lock","Through the lock onto Lake Päijänne.","Kalkkinen-Schleuse","Durch die Schleuse auf den Päijänne.",["food"]],
+    ["Kelvenne","Sandy beaches, lagoon bays, crystal-clear water.","Kelvenne","Sandstrände, Lagunenbuchten, glasklares Wasser.",["kids","nature"]],
+    ["Kelvenne","Hike along the esker, swim, sauna.","Kelvenne","Wanderung auf dem Os, baden, Sauna.",["nature","sauna"]],
+    ["Pulkkilanharju & Paatsalo","Ridge islands and the Paatsalo viewpoint over Tehinselkä.","Pulkkilanharju & Paatsalo","Os-Inseln und der Aussichtspunkt Paatsalo über die Tehinselkä.",["nature","active"]],
+    ["Back to Lake Ruotsalainen","Back through the lock for a last evening.","Zurück zum Ruotsalainen","Zurück durch die Schleuse für einen letzten Abend.",["sauna","golf"]]]}
+};
+const SPARE=["Spare day","Wind or a lazy day — more beaches, more sauna. We suggest where at handover.","Reservetag","Für Wind oder Faulenzen — mehr Strand, mehr Sauna. Wir empfehlen Orte bei der Übergabe."];
+const IDEAS=[
+ ["Helsinki, 2 nights","Helsinki, 2 Nächte","Design District, Suomenlinna sea fortress, Löyly sauna by the sea.","Design District, Seefestung Suomenlinna, Löyly-Sauna am Meer.","https://www.myhelsinki.fi/","MyHelsinki"],
+ ["Porvoo day trip","Tagesausflug Porvoo","Old town of red riverside storehouses, under an hour from Helsinki.","Altstadt mit roten Speicherhäusern am Fluss, unter einer Stunde von Helsinki.","https://www.visitporvoo.fi/","Visit Porvoo"],
+ ["Rovaniemi & Lapland","Rovaniemi & Lappland","Night train or a short flight from Helsinki. Reindeer, huskies, the Arctic Circle.","Nachtzug oder kurzer Flug ab Helsinki. Rentiere, Huskys, Polarkreis.","https://www.visitrovaniemi.fi/","Visit Rovaniemi"],
+ ["Lake Saimaa & Savonlinna","Saimaa & Savonlinna","Finland's largest lake and Olavinlinna castle.","Finnlands größter See und die Burg Olavinlinna.","https://visitsaimaa.fi/en/","Visit Saimaa"]
+];
+const AVAIL_URL="https://htyyxhgbpegknsndocjy.supabase.co/functions/v1/availability";
+const $=s=>document.querySelector(s);
+const st={avail:null,availKey:"",lang:"en",interests:new Set(),boat:null,addons:new Set(["linen"]),qty:{},img:{},showAll:false};
+try{const l=localStorage.getItem("hb-lang");if(l)st.lang=l}catch(e){}
+if(navigator.language&&navigator.language.startsWith("de")&&!(()=>{try{return localStorage.getItem("hb-lang")}catch(e){return null}})())st.lang="de";
+const L=()=>T[st.lang],li=()=>st.lang==="en"?0:1;
+const fmt=n=>st.lang==="de"?n.toLocaleString("de-DE",{maximumFractionDigits:2})+" €":"€"+n.toLocaleString("en-GB",{maximumFractionDigits:2});
+const addDays=(iso,n)=>{const d=new Date(iso+"T12:00");d.setDate(d.getDate()+n);return d};
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const loc=()=>st.lang==="de"?"de-DE":"en-GB";
+const nice=d=>d.toLocaleDateString(loc(),{weekday:"short",day:"numeric",month:"short"});
+const sub=(s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
+function fill(sel,from,to,def,list){const e=$(sel);e.innerHTML="";(list||Array.from({length:to-from+1},(_,i)=>i+from)).forEach(v=>{const o=new Option(v,v);if(v===def)o.selected=true;e.add(o)})}
+fill("#nights",0,0,7,[3,4,5,6,7,8,9,10,14]);fill("#adults",1,8,2);fill("#kids",0,6,0);
+$("#start").value="2027-07-05";
+const nights=()=>+$("#nights").value,people=()=>+$("#adults").value+ +$("#kids").value;
+
+function boatCost(b){let t=0;for(let i=0;i<nights();i++){const g=addDays($("#start").value,i).getDay();t+=[5,6,0].includes(g)?b.we:b.wd}return $("#early").checked?Math.round(t*90)/100:t}
+function best(){return BOATS.filter(b=>b.cap>=people()&&availOf(b)!==0).sort((a,b)=>a.cap-b.cap||a.wd-b.wd)[0]}
+const qty=a=>st.qty[a.id]||1;
+function aCost(a){if(a.price==null)return null;return a.unit==="person"?a.price*people():a.unit==="day"?a.price*nights()*qty(a):a.unit==="each"?a.price*qty(a):a.price}
+const aName=a=>a[st.lang][0]+(a.max>1&&qty(a)>1?" × "+qty(a):"");
+
+function renderStatic(){
+ document.documentElement.lang=st.lang;
+ document.querySelectorAll("[data-t]").forEach(e=>{const v=L()[e.dataset.t];if(v!=null)e.textContent=v});
+ document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===st.lang));
+ [["#cancList","cancL"],["#incList","incL"],["#excList","excL"],["#arrList","arrL"],["#ruleList","ruleL"],["#onbList","onbL"],["#brgList","brgL"]].forEach(([s,k])=>$(s).innerHTML=L()[k].map(x=>`<li>${x}</li>`).join(""));
+ $("#ideas").innerHTML=IDEAS.map(i=>`<div><b>${i[li()]}</b>${i[2+li()]}<br><a href="${i[4]}" target="_blank" rel="noopener">${i[5]} ↗</a></div>`).join("")+
+  `<div><b>${st.lang==="de"?"Flüge nach Helsinki":"Flights to Helsinki"}</b><a id="flightLink" target="_blank" rel="noopener">Google Flights ↗</a></div>`;
+ $("#bookBtn").textContent=L().book;$("#waBtn").textContent=L().wa;$("#reqBtn").textContent=L().req;$("#copyReq").textContent=L().copy;$("#bookNote").textContent=L().bookNote;$("#mBook").textContent=L().seeTrip;
+}
+function boatIdFor(name){const n=(name||"").toLowerCase();if(n.includes("spa"))return "24s";if(n.includes("42/8")||n.includes("42 8"))return "42-8";if(n.includes("42"))return "42-6";if(n.includes("36"))return "36";if(n.includes("24"))return "24";if(n.includes("21"))return "21";return null}
+let availTimer=null;
+function loadAvail(){const key=[$("#start").value,nights(),$("#adults").value,$("#kids").value].join("|");if(key===st.availKey)return;st.availKey=key;st.avail=null;
+ clearTimeout(availTimer);availTimer=setTimeout(async()=>{try{const r=await fetch(`${AVAIL_URL}?arrival=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}&children=${$("#kids").value}&lang=${st.lang}`);
+  if(!r.ok)return;const j=await r.json();if(st.availKey!==key)return;const m={};(j.rooms||[]).forEach(x=>{const id=boatIdFor(x.name);if(id)m[id]=x});st.avail={map:m,ok:true};update()}catch(e){}},400)}
+function availOf(b){if(!st.avail)return undefined;const x=st.avail.map[b.id];return x?x.available:0}
+function renderInterests(){
+ $("#interests").innerHTML="";
+ Object.entries(INTERESTS).forEach(([k,v])=>{const b=document.createElement("button");b.className="chip";b.textContent=v[li()];b.setAttribute("aria-pressed",st.interests.has(k));
+  b.onclick=()=>{st.interests.has(k)?st.interests.delete(k):st.interests.add(k);update()};$("#interests").appendChild(b)});
+}
+function renderBoats(){
+ const bb=best();if(!st.boat||BOATS.find(b=>b.id===st.boat).cap<people()||availOf(BOATS.find(b=>b.id===st.boat))===0)st.boat=bb?bb.id:null;
+ $("#boats").innerHTML="";
+ BOATS.forEach(b=>{const av=availOf(b),booked=av===0,off=b.cap<people()||booked,i=st.img[b.id]||0,el=document.createElement("div");
+  el.className="boat"+(off?" off":"");el.setAttribute("role","button");el.setAttribute("aria-pressed",st.boat===b.id);
+  el.innerHTML=`<div class="ph"><img src="${b.img[i]}" alt="${b.name}" loading="lazy">${bb&&bb.id===b.id?`<span class="tagwrap"><span class="tag rec">${L().fit}</span></span>`:""}${b.img.length>1?`<button class="nav">${i+1}/${b.img.length} ›</button>`:""}</div>
+  <div class="bd"><b>${b.name}</b><span class="meta">${L().upto} ${b.cap} · ${b[st.lang]}</span>
+  ${av>0?`<span class="tag us" style="margin-top:6px">${av===1?L().last1:sub(L().leftN,{n:av})}</span>`:""}<div class="p">${booked?`<span class="meta">${L().booked}</span>`:off?`<span class="meta">${L().toosmall}</span>`:fmt(boatCost(b))+` <span class="r">${sub(L().forN,{n:nights()})}</span>`}</div>
+  <span class="r">${fmt(b.wd)} ${L().wd} · ${fmt(b.we)} ${L().we}</span></div>`;
+  const nav=el.querySelector(".nav");if(nav)nav.onclick=e=>{e.stopPropagation();st.img[b.id]=(i+1)%b.img.length;renderBoats()};
+  el.querySelector("img").onclick=e=>{if(b.img.length>1){e.stopPropagation();st.img[b.id]=(i+1)%b.img.length;renderBoats()}};
+  el.onclick=()=>{if(!off){st.boat=b.id;update()}};$("#boats").appendChild(el)});
+ if(!bb)$("#boats").insertAdjacentHTML("beforeend",`<p class="warn">${L().over8}</p>`);
+}
+function renderAddons(){
+ const rel=a=>a.tags.includes("*")||a.tags.some(t=>st.interests.has(t))||st.addons.has(a.id);
+ let list=ADDONS.filter(rel);if(list.length<4)list=list.concat(ADDONS.filter(a=>!list.includes(a)&&["sup","dinghy","kayak"].includes(a.id))).slice(0,4);
+ const shown=st.showAll?ADDONS:list;
+ $("#addons").innerHTML="";
+ shown.forEach(a=>{const r=a.tags.some(t=>st.interests.has(t)),row=document.createElement("label");row.className="addon";
+  const sel=a.max>1?`<select aria-label="qty">${Array.from({length:a.max},(_,i)=>`<option ${qty(a)===i+1?"selected":""}>${i+1}</option>`).join("")}</select>`:"";
+  row.innerHTML=`<input type="checkbox" ${st.addons.has(a.id)?"checked":""}><span class="n">${a[st.lang][0]}${r?` <span class="tag rec">${L().forYou}</span>`:""}<small>${a[st.lang][1]}${a.unit==="day"?" · "+nights()+" "+L().days:""}</small></span>${sel}<span>${a.price==null?`<span class="onreq">${L().onreq}</span>`:fmt(aCost(a))}</span>`;
+  const s=row.querySelector("select");if(s){s.onclick=e=>e.preventDefault();s.onchange=e=>{st.qty[a.id]=+e.target.value;st.addons.add(a.id);update()}}
+  row.querySelector("input").onchange=e=>{e.target.checked?st.addons.add(a.id):st.addons.delete(a.id);update()};
+  $("#addons").appendChild(row)});
+ $("#moreBtn").textContent=st.showAll?L().showLess:L().showAll+" ("+ADDONS.length+")";
+}
+function route(){const n=nights();return n<=4?R.short:n<=6?R.mid:R.long}
+function plan(){
+ const r=route(),n=nights(),days=[];
+ for(let i=0;i<n;i++){const x=r.d[i];days.push(x?{t:x[li()*2],p:x[1+li()*2],tips:x[4]}:{t:SPARE[li()*2],p:SPARE[1+li()*2],tips:["sauna","active"]})}
+ days.push({t:st.lang==="de"?"Rückkehr nach Heinola":"Back to Heinola",p:st.lang==="de"?"Rückgabe bis 10 Uhr, mit vollen Tanks.":"Return by 10:00, with full tanks.",tips:[]});
+ return {r,days};
+}
+function renderPlan(){
+ const {r,days}=plan();$("#routeTitle").textContent=r.t[li()];$("#routeSub").textContent=r.s[li()];
+ $("#plan").innerHTML=days.map((d,i)=>{const dt=addDays($("#start").value,i),tips=d.tips.filter(t=>st.interests.has(t));
+  return `<div class="day"><div class="d">${dt.toLocaleDateString(loc(),{weekday:"short"})}<b>${dt.getDate()}</b>${dt.toLocaleDateString(loc(),{month:"short"})}</div><div><h3>${d.t}</h3><p>${d.p}</p>${tips.length?`<div class="tips">${tips.map(t=>`<span>${TIPS[t][li()]}</span>`).join("")}</div>`:""}</div></div>`}).join("");
+}
+function totals(){
+ const b=BOATS.find(x=>x.id===st.boat),sel=ADDONS.filter(a=>st.addons.has(a.id));
+ const ad=sel.filter(a=>a.price!=null).map(a=>[aName(a),aCost(a)]),req=sel.filter(a=>a.price==null).map(a=>a[st.lang][0]);
+ const boat=b?boatCost(b):0,pet=+$("#dog").value?140:0;
+ return {b,boat,ad,req,pet,total:boat+pet+ad.reduce((s,x)=>s+x[1],0)};
+}
+function bookUrl(){return `https://houseboat.fi/${st.lang==="de"?"de-de":"en-gb"}/booking/?date=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}`}
+function reqText(){const t=totals();return sub(L().mail,{boat:t.b?t.b.name:"—",d:$("#start").value,n:nights(),
+ g:sub(L().guests,{a:$("#adults").value,k:$("#kids").value})+(+$("#dog").value?L().pet1:""),
+ x:[...t.ad.map(a=>a[0]),...t.req].join(", ")||"—",i:[...st.interests].map(k=>INTERESTS[k][li()]).join(", ")||"—",t:fmt(t.total)})}
+function renderSum(){
+ const t=totals(),end=addDays($("#start").value,nights());
+ let h=`<div class="sm">${nice(addDays($("#start").value,0))} – ${nice(end)} · ${nights()} ${L().nightsL}<br>${sub(L().guests,{a:$("#adults").value,k:$("#kids").value})}${+$("#dog").value?L().pet1:""}</div>`;
+ h+=`<div class="line" style="margin-top:8px"><span>${t.b?t.b.name:"—"}${$("#early").checked?" ("+L().early+")":""}</span><span>${fmt(t.boat)}</span></div>`;
+ t.ad.forEach(a=>h+=`<div class="line"><span>${a[0]}</span><span>${fmt(a[1])}</span></div>`);
+ if(t.pet)h+=`<div class="line"><span>${L().petClean}</span><span>${fmt(t.pet)}</span></div>`;
+ t.req.forEach(r=>h+=`<div class="line"><span>${r}</span><span class="onreq">${L().onreq}</span></div>`);
+ h+=`<div class="line tot"><span>${L().withUs}</span><span>${fmt(t.total)}</span></div><div class="sm">${L().deposit}</div>`;
+ $("#sum").innerHTML=h;$("#mtot").textContent=fmt(t.total);
+ $("#bookBtn").href=$("#mBook").href=bookUrl();
+ $("#waBtn").href="https://wa.me/358401646168?text="+encodeURIComponent(reqText());
+ const fl=document.getElementById("flightLink");if(fl)fl.href="https://www.google.com/travel/flights?q="+encodeURIComponent(`Flights to HEL on ${$("#start").value} through ${iso(end)}`);
+ $("#offer-json").textContent=JSON.stringify({provider:"Houseboat Finland",check_in:$("#start").value,nights:nights(),boat:t.b&&t.b.name,boat_total_eur:t.boat,extras:t.ad,pet_cleaning_eur:t.pet,total_eur:t.total,deposit_eur:2500,fuel_included:false,book:bookUrl()});
+}
+function seasonCheck(){const s=new Date($("#start").value+"T12:00"),e=addDays($("#start").value,nights());
+ const ok=s>=new Date(2027,4,1)&&e<=new Date(2027,9,31,23);$("#seasonWarn").hidden=ok;$("#seasonWarn").textContent=L().warnSeason}
+function update(){seasonCheck();loadAvail();renderInterests();renderBoats();renderAddons();renderPlan();renderSum();if(!$("#req").hidden)$("#reqText").value=reqText()}
+function setLang(l){st.lang=l;try{localStorage.setItem("hb-lang",l)}catch(e){};renderStatic();update()}
+document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>setLang(b.dataset.l));
+$("#moreBtn").onclick=()=>{st.showAll=!st.showAll;renderAddons()};
+$("#reqBtn").onclick=()=>{$("#req").hidden=!$("#req").hidden;$("#reqText").value=reqText()};
+$("#copyReq").onclick=async()=>{try{await navigator.clipboard.writeText($("#reqText").value);$("#copyReq").textContent=L().copied;setTimeout(()=>$("#copyReq").textContent=L().copy,1500)}catch(e){$("#reqText").select()}};
+["start","nights","adults","kids","dog","early"].forEach(id=>["change","input"].forEach(ev=>$("#"+id).addEventListener(ev,update)));
+renderStatic();update();
+</script>
+</body>
+</html>
