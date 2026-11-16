@@ -404,7 +404,7 @@ function totals(){
  const boat=b?boatCost(b):0,pet=+$("#dog").value?140:0;
  return {b,boat,ad,req,pet,total:boat+pet+ad.reduce((s,x)=>s+x[1],0)};
 }
-function bookUrl(){return `https://houseboat.fi/${st.lang==="de"?"de-de":"en-gb"}/booking/?date=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}`}
+function bookUrl(){return `https://fi-ibe.hopenapi.com/booking2/hotel/index.html?providerId=16401&language=${st.lang==="de"?"de":"en"}&currency=EUR&date=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}`}
 function reqText(){const t=totals();return sub(L().mail,{boat:t.b?t.b.name:"—",d:$("#start").value,n:nights(),
  g:sub(L().guests,{a:$("#adults").value,k:$("#kids").value})+(+$("#dog").value?L().pet1:""),
  x:[...t.ad.map(a=>a[0]),...t.req].join(", ")||"—",i:[...st.interests].map(k=>INTERESTS[k][li()]).join(", ")||"—",t:fmt(t.total)})}
