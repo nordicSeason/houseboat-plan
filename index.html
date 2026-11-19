@@ -40,6 +40,7 @@ header p{margin:0;max-width:600px;opacity:.95}
 .lang{position:absolute;right:0;top:0;display:flex;gap:4px}
 .lang button{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:7px;padding:4px 9px;font:600 12px Inter;cursor:pointer}
 .lang button[aria-pressed=true]{background:#fff;color:var(--lake)}
+@media(max-width:640px){.lang{position:static;justify-content:flex-end;flex-wrap:wrap;margin-bottom:10px}}
 main{max-width:1000px;margin:-22px auto 40px;padding:0 14px;display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start;position:relative}
 @media(max-width:840px){main{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;margin-bottom:16px}
@@ -119,7 +120,7 @@ details.after summary{font:500 18px Fraunces,serif;cursor:pointer}
 </head>
 <body>
 <header><div class="wrap">
-  <div class="lang"><button data-l="en">EN</button><button data-l="de">DE</button></div>
+  <div class="lang"><button data-l="en">EN</button><button data-l="de">DE</button><button data-l="fi">FI</button><button data-l="sv">SV</button><button data-l="ru">RU</button><button data-l="fr">FR</button></div>
   <small data-t="kicker"></small>
   <h1 data-t="title"></h1>
   <p data-t="lead"></p>
@@ -262,7 +263,107 @@ trip:"Ihre Reise",withUs:"Gesamt bei Houseboat Finland",deposit:"+ 2.500 € Kau
 reqlabel:"Ihre Anfrage (kopieren und an info@houseboat.fi senden)",bookNote:"Öffnet unsere Buchungsseite mit Ihren Daten und Erwachsenen. Kinder und Boot wählen Sie dort.",
 nightsL:"Nächte",guests:"{a} Erwachsene, {k} Kinder",pet1:", 1 Haustier",petClean:"Reinigung nach Haustier",early:"−10 %",
 warnSeason:"Unsere Saison 2027 läuft vom 1. Mai bis 31. Oktober. Bitte wählen Sie Daten in diesem Zeitraum.",seeTrip:"Buchen",
-mail:"Hallo Houseboat Finland,\n\nich möchte {boat} ab {d} für {n} Nächte buchen.\nGäste: {g}.\nExtras: {x}.\nInteressen: {i}.\nGeschätzter Gesamtpreis: {t}.\n\nBitte bestätigen Sie die Verfügbarkeit.\n"}
+mail:"Hallo Houseboat Finland,\n\nich möchte {boat} ab {d} für {n} Nächte buchen.\nGäste: {g}.\nExtras: {x}.\nInteressen: {i}.\nGeschätzter Gesamtpreis: {t}.\n\nBitte bestätigen Sie die Verfügbarkeit.\n"},
+fi:{kicker:"Houseboat Finland · Heinola · Päijänne",title:"Suunnittele asuntoveneviikkosi Suomen järvillä",lead:"Valitse päivät, näe heti jokaisen veneen kokonaishinta ja saat satamatiimiltämme reittiehdotuksen päivä päivältä.",
+usp1:"Ei venekorttia",usp2:"Puulämmitteinen sauna joka veneessä",usp3:"Hinta per vene, ei per henkilö",usp4:"★ 4,7 Googlessa",
+s1:"Milloin ja keitä",s1h:"Kausi 1.5.–31.10.2027. Saapuminen joka päivä klo 15–18, lähtö klo 10 mennessä. Vähintään 3 yötä.",
+start:"Saapumispäivä",nights:"Yöt",adults:"Aikuiset",kids:"Lapset",pet:"Lemmikki mukana",no:"Ei",yes:"Kyllä",love:"Mistä pidätte? (valinnainen)",
+s2:"Valitse asuntovene",s2h:"Kokonaishinta valitsemillesi päiville, sis. alv 25,5 %. Pe-, la- ja su-yöt ovat arkiöitä kalliimpia. Napauta kuvaa nähdäksesi lisää.",
+eb:"Early Bird 2027 – 10 % alennus",ebh:"Voimassa oleva tarjous varaussivullamme. Samat peruutusehdot kuin perushinnassa — katso Hyvä tietää.",
+fit:"Sopii parhaiten",upto:"Enintään",forN:"{n} yöltä",wd:"ma–to",we:"pe–su",toosmall:"Liian pieni seurueellenne",booked:"Varattu näille päiville — kokeile muita päiviä",last1:"Vapaana valitsemillesi päiville",leftN:"{n} venettä vapaana",over8:"Yli 8 henkeä: ottakaa kaksi venettä ja matkustakaa yhdessä. Kirjoittakaa meille.",
+s3:"Lisäpalvelut",s3h:"Hintaan sisältyy jo: loppusiivous, saunapuut (1 säkki), jolla maihin menoon, 1 tunnin kipparikoulutus, Wi-Fi.",showAll:"Näytä kaikki lisäpalvelut",showLess:"Näytä vähemmän",onreq:"pyynnöstä",days:"päivää",forYou:"Teille",
+s4:"Reittinne",s4h:"Satamatiimimme esimerkkireitti. Sovitamme sen teille ja säähän veneen luovutuksessa; varatkaa vesillä 3–4 tuntia päivässä.",
+s5:"Hyvä tietää",k1:"2 500 €",k1s:"Vakuus kortilla luovutuksessa, palautetaan 7–14 päivässä",k2:"Polttoaine erikseen",k2s:"Vene luovutetaan täysin tankein; palauta se täynnä",k3:"18+",k3s:"Kipparin vähimmäisikä; venekorttia ei tarvita",k4:"140 €",k4s:"Lemmikit tervetulleita — hypoallergeeninen siivous per varaus",
+inc:"Sisältyy",exc:"Ei sisälly",arr:"Saapuminen",rules:"Vesillä",
+incL:["Asuntovene kaikkine varusteineen","1 tunnin kipparikoulutus ja turvallisuusperehdytys","Navigointitabletti kartoineen sekä paperikartat — lataamme reittinne valmiiksi","Pieni kumijolla (3 m, enintään 4 henkeä)","Kaasu ruoanlaittoon, 1 säkki saunapuita","Puhelin- ja WhatsApp-tuki matkan aikana","Loppusiivous, alv 25,5 %"],
+excL:["Polttoaine (palauta vene täysin tankein)","Liinavaatteet ja pyyhkeet (30 € / henkilö)","Lisävarusteet: SUP, kajakki, RIB, polkupyörät, kalastusvälineet","Ruoka — kauppoja reitin varrella; keittiö on täysin varusteltu"],
+arrL:["Satama: Satamatie 4, 18100 Heinola, 1 km keskustasta","Autolla: noin 140 km Helsinki-Vantaan lentoasemalta E75-tietä (noin 1,5 h)","Bussilla: suorat bussit Helsinki-Vantaalta Heinolaan (matkahuolto.fi)","Pysäköinti satamassa; sähköauton pikalataus läheisellä K-Citymarketilla"],
+ruleL:["Nopeus 6–7 km/h — kiireetöntä matkantekoa","Tuuli yli 8 m/s: pysy laiturissa","Kansallispuisto: enintään 2 yötä samassa satamassa, tulet vain merkityillä paikoilla","Koirat kytkettyinä 1.3.–19.8.","Suosittelemme vähintään 2 henkeä venettä kohden"],
+canc:"Maksu ja peruutus",cancL:["Koko summa kortilla varattaessa, tai 30 % kortilla, jos varaat vähintään 30 päivää etukäteen","Myös maksu laskulla pankkisiirtona on mahdollinen","Peruutus yli 30 päivää ennen saapumista: maksat vain ensimmäisen yön","Peruutus alle 30 päivää ennen saapumista: ennakkomaksua ei palauteta","Samat ehdot perushinnalle ja Early Birdille"],
+onb:"Valmiina veneessä",brg:"Ota mukaan",
+onbL:["Täysin varusteltu keittiö: kattilat, astiat, aterimet, kahvinkeitin/vedenkeitin","Tyynyt ja peitot","WC-paperi, käsisaippua, ekologinen shampoo ja suihkugeeli","Astianpesuaine ja siivousvälineet","Hyönteissuojaus","230 V sähkö, lämmitys, lämmin vesi, ilmainen Wi-Fi","Pelastusliivit ja turvavarusteet"],
+brgL:["Ruoka — kauppoja on matkan varrella, kaikkea ei tarvitse ostaa kerralla","Kahvi tai tee, kahvinsuodattimet, mausteet, ruokaöljy","Liinavaatteet ja pyyhkeet — tai vuokraa ne meiltä (30 € / henkilö)","Pullotettua juomavettä (hanavesi on suodatettua järvivettä, sopii keitettäväksi)","Lämmintä ja vedenpitävää vaatetta — vesillä on viileämpää","Uima-asu, aurinkolasit, aurinkovoide","Omat hygieniatarvikkeet ja lääkkeet","Pistorasia-adapteri, jos tulet EU:n ulkopuolelta","Kalastusvälineet — tai vuokraa ne meiltä"],
+after:"Veneen jälkeen: lisää Suomea",afterh:"Varataan erikseen kultakin palveluntarjoajalta — ideoita asuntoveneviikkoa edeltäviin ja seuraaviin päiviin.",
+trip:"Matkanne",withUs:"Yhteensä Houseboat Finlandille",deposit:"+ 2 500 € vakuus (palautetaan) · polttoaine erikseen",book:"Varaa verkossa",wa:"Kysy WhatsAppissa",req:"Pyydä sähköpostilla",copy:"Kopioi",copied:"Kopioitu",
+reqlabel:"Pyyntösi (kopioi ja lähetä osoitteeseen info@houseboat.fi)",bookNote:"Avaa varaussivumme valmiiksi täytetyillä päivämäärillä ja aikuisten määrällä. Lisää lapset ja valitse vene siellä.",
+nightsL:"yötä",guests:"aikuisia {a}, lapsia {k}",pet1:", 1 lemmikki",petClean:"Lemmikkisiivous",early:"−10 %",
+warnSeason:"Kautemme 2027 on 1.5.–31.10. Valitse päivät tältä väliltä.",seeTrip:"Varaa",
+mail:"Hei Houseboat Finland,\n\nhaluaisin varata veneen {boat} alkaen {d}, {n} yöksi.\nHenkilöt: {g}.\nLisäpalvelut: {x}.\nKiinnostuksen kohteet: {i}.\nArvioitu kokonaishinta: {t}.\n\nVahvistatteko saatavuuden?\n"},
+sv:{kicker:"Houseboat Finland · Heinola · Päijänne",title:"Planera din husbåtsvecka på de finska sjöarna",lead:"Välj datum, se totalpriset för varje båt direkt och få ett ruttförslag dag för dag från vårt hamnteam.",
+usp1:"Inget båtkort behövs",usp2:"Vedeldad bastu på varje båt",usp3:"Pris per båt, inte per person",usp4:"★ 4,7 på Google",
+s1:"När och vilka",s1h:"Säsong 1 maj – 31 oktober 2027. Incheckning alla dagar 15–18, utcheckning senast 10. Minst 3 nätter.",
+start:"Incheckningsdatum",nights:"Nätter",adults:"Vuxna",kids:"Barn",pet:"Husdjur ombord",no:"Nej",yes:"Ja",love:"Vad gillar ni? (valfritt)",
+s2:"Välj husbåt",s2h:"Totalpris för dina datum, inkl. 25,5 % moms. Fredags-, lördags- och söndagsnätter kostar mer än vardagar. Tryck på bilden för fler bilder.",
+eb:"Early Bird 2027 – 10 % rabatt",ebh:"Aktuellt erbjudande på vår bokningssida. Samma avbokningsvillkor som standardpriset — se Bra att veta.",
+fit:"Passar bäst",upto:"Upp till",forN:"för {n} nätter",wd:"mån–tor",we:"fre–sön",toosmall:"För liten för ert sällskap",booked:"Bokad dessa datum — prova andra datum",last1:"Ledig för dina datum",leftN:"{n} båtar lediga",over8:"Fler än 8 gäster: ta två båtar och res tillsammans. Skriv till oss.",
+s3:"Tillval",s3h:"Redan inkluderat: slutstädning, bastuved (1 säck), jolle för att gå i land, 1 timmes skepparutbildning, Wi-Fi.",showAll:"Visa alla tillval",showLess:"Visa färre",onreq:"på förfrågan",days:"dagar",forYou:"För er",
+s4:"Er rutt",s4h:"Ett exempel från vårt hamnteam. Vi anpassar den efter er och vädret vid överlämningen; räkna med 3–4 timmar på vattnet per dag.",
+s5:"Bra att veta",k1:"2 500 €",k1s:"Deposition med kort vid ombordstigning, återbetalas inom 7–14 dagar",k2:"Bränsle tillkommer",k2s:"Båten lämnas ut med fulla tankar; lämna tillbaka den full",k3:"18+",k3s:"Skepparens minimiålder; inget båtkort behövs",k4:"140 €",k4s:"Husdjur välkomna — allergivänlig städning per bokning",
+inc:"Ingår",exc:"Ingår inte",arr:"Hitta hit",rules:"På vattnet",
+incL:["Husbåten med all utrustning","1 timmes skepparutbildning och säkerhetsgenomgång","Navigationsplatta med sjökort samt papperskartor — vi lägger in er rutt","Liten gummijolle (3 m, upp till 4 personer)","Gasol för matlagning, 1 säck bastuved","Telefon- och WhatsApp-support under resan","Slutstädning, 25,5 % moms"],
+excL:["Bränsle (lämna tillbaka båten med fulla tankar)","Sängkläder och handdukar (30 € per person)","Extra utrustning: SUP, kajak, RIB, cyklar, fiskeutrustning","Mat — butiker längs rutten; köket är fullt utrustat"],
+arrL:["Hamn: Satamatie 4, 18100 Heinola, 1 km från centrum","Med bil: ca 140 km från Helsingfors-Vanda flygplats via E75 (ca 1,5 h)","Med buss: direktbussar från Helsingfors-Vanda flygplats till Heinola (matkahuolto.fi)","Parkering i hamnen; snabbladdning för elbil vid K-Citymarket i närheten"],
+ruleL:["Fart 6–7 km/h — långsamt resande","Vind över 8 m/s: ligg kvar vid bryggan","Nationalpark: högst 2 nätter per hamn, eld bara på markerade platser","Hundar i koppel 1 mars – 19 augusti","Minst 2 personer per båt rekommenderas"],
+canc:"Betalning och avbokning",cancL:["Betala hela beloppet med kort vid bokning, eller 30 % med kort om du bokar minst 30 dagar i förväg","Banköverföring mot faktura är också möjlig","Avbokning mer än 30 dagar före ankomst: du betalar bara första natten","Avbokning inom 30 dagar före ankomst: förskottet återbetalas inte","Samma villkor för standardpris och Early Bird"],
+onb:"Redan ombord",brg:"Ta med",
+onbL:["Fullt utrustat kök: kastruller, porslin, bestick, kaffebryggare/vattenkokare","Kuddar och täcken","Toalettpapper, handtvål, ekologiskt schampo och duschtvål","Diskmedel och städmaterial","Insektsskydd","230 V el, värme, varmvatten, gratis Wi-Fi","Flytvästar och säkerhetsutrustning"],
+brgL:["Mat — det finns butiker längs vägen, du behöver inte köpa allt på en gång","Kaffe eller te, kaffefilter, kryddor, matolja","Sängkläder och handdukar — eller hyr dem av oss (30 € per person)","Dricksvatten på flaska (kranvattnet är filtrerat sjövatten, bra att koka)","Varma och vattentäta kläder — det är svalare på vattnet","Badkläder, solglasögon, solkräm","Egna hygienartiklar och mediciner","Stickkontaktsadapter om du kommer från ett land utanför EU","Fiskeutrustning — eller hyr den av oss"],
+after:"Efter båten: mer av Finland",afterh:"Bokas separat hos varje arrangör — idéer för dagarna före och efter er husbåtsvecka.",
+trip:"Er resa",withUs:"Totalt hos Houseboat Finland",deposit:"+ 2 500 € deposition (återbetalas) · bränsle tillkommer",book:"Boka online",wa:"Fråga på WhatsApp",req:"Skicka förfrågan per e-post",copy:"Kopiera",copied:"Kopierat",
+reqlabel:"Din förfrågan (kopiera och skicka till info@houseboat.fi)",bookNote:"Öppnar vår bokningssida med dina datum och antal vuxna ifyllda. Lägg till barn och välj båt där.",
+nightsL:"nätter",guests:"{a} vuxna, {k} barn",pet1:", 1 husdjur",petClean:"Städning efter husdjur",early:"−10 %",
+warnSeason:"Vår säsong 2027 pågår 1 maj – 31 oktober. Välj datum inom den perioden.",seeTrip:"Boka",
+mail:"Hej Houseboat Finland,\n\njag vill boka {boat} från {d} i {n} nätter.\nGäster: {g}.\nTillval: {x}.\nIntressen: {i}.\nUppskattat totalpris: {t}.\n\nVänligen bekräfta tillgängligheten.\n"},
+ru:{kicker:"Houseboat Finland · Хейнола · озеро Пяйянне",title:"Спланируйте неделю на хаусботе на финских озёрах",lead:"Выберите даты — сразу увидите полную цену каждой лодки и получите маршрут по дням от нашей команды в гавани.",
+usp1:"Права не нужны",usp2:"Дровяная сауна на каждой лодке",usp3:"Цена за лодку, а не за человека",usp4:"★ 4,7 в Google",
+s1:"Когда и кто",s1h:"Сезон 1 мая – 31 октября 2027. Заезд в любой день 15:00–18:00, выезд до 10:00. Минимум 3 ночи.",
+start:"Дата заезда",nights:"Ночей",adults:"Взрослых",kids:"Детей",pet:"Животное на борту",no:"Нет",yes:"Да",love:"Что вам интересно? (необязательно)",
+s2:"Выберите хаусбот",s2h:"Полная цена на ваши даты, включая НДС 25,5 %. Ночи пятницы, субботы и воскресенья дороже будних. Нажмите на фото, чтобы посмотреть ещё.",
+eb:"Раннее бронирование 2027 – скидка 10 %",ebh:"Действующее предложение на нашей странице бронирования. Условия отмены те же, что у стандартного тарифа, — см. «Полезно знать».",
+fit:"Лучший вариант",upto:"До",forN:"за {n} ноч.",wd:"пн–чт",we:"пт–вс",toosmall:"Мала для вашей группы",booked:"На эти даты занята — попробуйте другие",last1:"Свободна на ваши даты",leftN:"Свободно лодок: {n}",over8:"Больше 8 гостей: возьмите две лодки и путешествуйте вместе. Напишите нам.",
+s3:"Дополнительно",s3h:"Уже включено: финальная уборка, дрова для сауны (1 мешок), шлюпка для высадки на берег, 1 час инструктажа шкипера, Wi-Fi.",showAll:"Показать все услуги",showLess:"Показать меньше",onreq:"по запросу",days:"дн.",forYou:"Для вас",
+s4:"Ваш маршрут",s4h:"Пример от нашей команды в гавани. При передаче лодки подстроим его под вас и погоду; рассчитывайте на 3–4 часа на воде в день.",
+s5:"Полезно знать",k1:"2 500 €",k1s:"Залог картой при посадке, возвращается через 7–14 дней",k2:"Топливо отдельно",k2s:"Лодку выдаём с полными баками; вернуть нужно тоже с полными",k3:"18+",k3s:"Минимальный возраст шкипера; права не нужны",k4:"140 €",k4s:"С животными можно — гипоаллергенная уборка, за бронирование",
+inc:"Включено",exc:"Не включено",arr:"Как добраться",rules:"На воде",
+incL:["Хаусбот со всем оборудованием","1 час инструктажа шкипера и инструктаж по безопасности","Навигационный планшет с картами плюс бумажные карты — загрузим ваш маршрут","Небольшая надувная шлюпка (3 м, до 4 человек)","Газ для готовки, 1 мешок дров для сауны","Поддержка по телефону и в WhatsApp во время поездки","Финальная уборка, НДС 25,5 %"],
+excL:["Топливо (верните лодку с полными баками)","Постельное бельё и полотенца (30 € с человека)","Доп. снаряжение: SUP, каяк, RIB, велосипеды, рыболовные снасти","Продукты — магазины есть по маршруту; кухня полностью оборудована"],
+arrL:["Гавань: Satamatie 4, 18100 Heinola, 1 км от центра","На машине: около 140 км от аэропорта Хельсинки по трассе E75 (около 1,5 ч)","На автобусе: прямые автобусы из аэропорта Хельсинки в Хейнолу (matkahuolto.fi)","Парковка в гавани; быстрая зарядка электромобилей у соседнего K-Citymarket"],
+ruleL:["Скорость 6–7 км/ч — неспешное путешествие","Ветер сильнее 8 м/с: оставайтесь у причала","Национальный парк: не больше 2 ночей в одной гавани, костры только в отмеченных местах","Собаки на поводке с 1 марта по 19 августа","Рекомендуем не меньше 2 человек на лодку"],
+canc:"Оплата и отмена",cancL:["Оплата картой полностью при бронировании или 30 % картой, если бронируете минимум за 30 дней","Можно также оплатить банковским переводом по счёту","Отмена больше чем за 30 дней до заезда: вы платите только за первую ночь","Отмена менее чем за 30 дней до заезда: предоплата не возвращается","Одинаковые условия для стандартного тарифа и раннего бронирования"],
+onb:"Уже на борту",brg:"Возьмите с собой",
+onbL:["Полностью оборудованная кухня: кастрюли, посуда, столовые приборы, кофеварка/чайник","Подушки и одеяла","Туалетная бумага, мыло, эко-шампунь и гель для душа","Средство для посуды и для уборки","Защита от насекомых","Электричество 230 В, отопление, горячая вода, бесплатный Wi-Fi","Спасательные жилеты и средства безопасности"],
+brgL:["Продукты — магазины есть по пути, не нужно покупать всё сразу","Кофе или чай, фильтры для кофе, специи, растительное масло","Постельное бельё и полотенца — или возьмите у нас (30 € с человека)","Питьевую воду в бутылках (вода из крана — фильтрованная озёрная, годится для кипячения)","Тёплую и непромокаемую одежду — на воде прохладнее","Купальник, солнечные очки, крем от солнца","Личные средства гигиены и лекарства","Переходник для розетки, если вы едете не из ЕС","Рыболовные снасти — или возьмите их у нас"],
+after:"После лодки: ещё больше Финляндии",afterh:"Бронируется отдельно у каждого организатора — идеи на дни до и после недели на хаусботе.",
+trip:"Ваша поездка",withUs:"Итого в Houseboat Finland",deposit:"+ 2 500 € залог (возвращается) · топливо отдельно",book:"Забронировать онлайн",wa:"Спросить в WhatsApp",req:"Запрос по e-mail",copy:"Копировать",copied:"Скопировано",
+reqlabel:"Ваш запрос (скопируйте и отправьте на info@houseboat.fi)",bookNote:"Откроет нашу страницу бронирования с вашими датами и числом взрослых. Детей и лодку выберите там.",
+nightsL:"ноч.",guests:"взрослых: {a}, детей: {k}",pet1:", 1 животное",petClean:"Уборка после животного",early:"−10 %",
+warnSeason:"Сезон 2027 длится с 1 мая по 31 октября. Выберите даты в этом периоде.",seeTrip:"Бронь",
+mail:"Здравствуйте, Houseboat Finland!\n\nХочу забронировать {boat} с {d} на {n} ноч.\nГости: {g}.\nДополнительно: {x}.\nИнтересы: {i}.\nОриентировочная сумма: {t}.\n\nПодтвердите, пожалуйста, наличие.\n"},
+fr:{kicker:"Houseboat Finland · Heinola · lac Päijänne",title:"Planifiez votre semaine en house-boat sur les lacs finlandais",lead:"Choisissez vos dates, voyez tout de suite le prix total de chaque bateau et recevez un itinéraire jour par jour de notre équipe du port.",
+usp1:"Sans permis",usp2:"Sauna au feu de bois sur chaque bateau",usp3:"Prix par bateau, pas par personne",usp4:"★ 4,7 sur Google",
+s1:"Quand et qui",s1h:"Saison du 1er mai au 31 octobre 2027. Arrivée tous les jours de 15 h à 18 h, départ avant 10 h. 3 nuits minimum.",
+start:"Date d'arrivée",nights:"Nuits",adults:"Adultes",kids:"Enfants",pet:"Animal à bord",no:"Non",yes:"Oui",love:"Qu'aimez-vous ? (facultatif)",
+s2:"Choisissez votre house-boat",s2h:"Prix total pour vos dates, TVA 25,5 % incluse. Les nuits du vendredi, du samedi et du dimanche coûtent plus cher qu'en semaine. Touchez une photo pour en voir plus.",
+eb:"Early Bird 2027 – 10 % de réduction",ebh:"Offre en cours sur notre page de réservation. Mêmes conditions d'annulation que le tarif standard — voir Bon à savoir.",
+fit:"Le plus adapté",upto:"Jusqu'à",forN:"pour {n} nuits",wd:"lun–jeu",we:"ven–dim",toosmall:"Trop petit pour votre groupe",booked:"Réservé à ces dates — essayez d'autres dates",last1:"Disponible à vos dates",leftN:"{n} bateaux disponibles",over8:"Plus de 8 personnes : prenez deux bateaux et voyagez ensemble. Écrivez-nous.",
+s3:"Options",s3h:"Déjà inclus : ménage final, bois pour le sauna (1 sac), annexe pour aller à terre, 1 h de formation au pilotage, Wi-Fi.",showAll:"Voir toutes les options",showLess:"Voir moins",onreq:"sur demande",days:"jours",forYou:"Pour vous",
+s4:"Votre itinéraire",s4h:"Un exemple de notre équipe du port. Nous l'adaptons à vous et à la météo à la remise du bateau ; comptez 3 à 4 heures sur l'eau par jour.",
+s5:"Bon à savoir",k1:"2 500 €",k1s:"Caution par carte à l'embarquement, remboursée sous 7 à 14 jours",k2:"Carburant en sus",k2s:"Bateau remis avec les réservoirs pleins ; rendez-le plein",k3:"18+",k3s:"Âge minimum du skipper ; pas de permis nécessaire",k4:"140 €",k4s:"Animaux bienvenus — ménage hypoallergénique par réservation",
+inc:"Inclus",exc:"Non inclus",arr:"Comment venir",rules:"Sur l'eau",
+incL:["Le house-boat avec tout son équipement","1 h de formation au pilotage et consignes de sécurité","Tablette de navigation avec cartes, plus cartes papier — nous y chargeons votre itinéraire","Petite annexe gonflable (3 m, jusqu'à 4 personnes)","Gaz pour cuisiner, 1 sac de bois pour le sauna","Assistance par téléphone et WhatsApp pendant le séjour","Ménage final, TVA 25,5 %"],
+excL:["Carburant (rendez le bateau avec les réservoirs pleins)","Linge de lit et serviettes (30 € par personne)","Équipement en plus : SUP, kayak, RIB, vélos, matériel de pêche","Nourriture — magasins le long du parcours ; cuisine entièrement équipée"],
+arrL:["Port : Satamatie 4, 18100 Heinola, à 1 km du centre","En voiture : environ 140 km depuis l'aéroport d'Helsinki par la E75 (environ 1 h 30)","En bus : bus directs de l'aéroport d'Helsinki à Heinola (matkahuolto.fi)","Parking au port ; recharge rapide pour voiture électrique au K-Citymarket tout proche"],
+ruleL:["Vitesse 6–7 km/h — voyage lent","Vent supérieur à 8 m/s : restez amarré","Parc national : 2 nuits maximum par port, feux uniquement aux emplacements prévus","Chiens en laisse du 1er mars au 19 août","Au moins 2 personnes par bateau recommandées"],
+canc:"Paiement et annulation",cancL:["Paiement intégral par carte à la réservation, ou 30 % par carte si vous réservez au moins 30 jours à l'avance","Virement bancaire sur facture également possible","Annulation plus de 30 jours avant l'arrivée : vous ne payez que la première nuit","Annulation dans les 30 jours avant l'arrivée : l'acompte n'est pas remboursé","Mêmes conditions pour le tarif standard et l'Early Bird"],
+onb:"Déjà à bord",brg:"À apporter",
+onbL:["Cuisine entièrement équipée : casseroles, vaisselle, couverts, cafetière/bouilloire","Oreillers et couvertures","Papier toilette, savon, shampooing et gel douche écologiques","Liquide vaisselle et produits ménagers","Protection contre les insectes","Électricité 230 V, chauffage, eau chaude, Wi-Fi gratuit","Gilets de sauvetage et équipement de sécurité"],
+brgL:["Nourriture — il y a des magasins en chemin, inutile de tout acheter d'un coup","Café ou thé, filtres à café, épices, huile de cuisson","Linge de lit et serviettes — ou louez-les chez nous (30 € par personne)","Eau potable en bouteille (l'eau du robinet est de l'eau du lac filtrée, à faire bouillir)","Vêtements chauds et imperméables — il fait plus frais sur l'eau","Maillot de bain, lunettes de soleil, crème solaire","Articles de toilette et médicaments personnels","Adaptateur de prise si vous venez d'un pays hors UE","Matériel de pêche — ou louez-le chez nous"],
+after:"Après le bateau : encore plus de Finlande",afterh:"À réserver séparément auprès de chaque prestataire — des idées pour les jours avant et après votre semaine en house-boat.",
+trip:"Votre séjour",withUs:"Total chez Houseboat Finland",deposit:"+ 2 500 € de caution (remboursée) · carburant en sus",book:"Réserver en ligne",wa:"Demander sur WhatsApp",req:"Demande par e-mail",copy:"Copier",copied:"Copié",
+reqlabel:"Votre demande (copiez-la et envoyez-la à info@houseboat.fi)",bookNote:"Ouvre notre page de réservation avec vos dates et le nombre d'adultes déjà remplis. Ajoutez les enfants et choisissez votre bateau sur place.",
+nightsL:"nuits",guests:"{a} adultes, {k} enfants",pet1:", 1 animal",petClean:"Ménage après animal",early:"−10 %",
+warnSeason:"Notre saison 2027 va du 1er mai au 31 octobre. Choisissez des dates dans cette période.",seeTrip:"Réserver",
+mail:"Bonjour Houseboat Finland,\n\nje souhaite réserver {boat} à partir du {d} pour {n} nuits.\nVoyageurs : {g}.\nOptions : {x}.\nCentres d'intérêt : {i}.\nTotal estimé : {t}.\n\nMerci de confirmer la disponibilité.\n"}
 };
 const BOATS=[
  {id:"21",name:"21/4 Eco",cap:4,wd:465,we:620,img:["https://houseboat.fi/img/daa20416e9c08f63.webp","https://houseboat.fi/img/5cd6072240b40fb9.webp","https://houseboat.fi/img/540a2e6694ed83a1.webp"],en:"1 bedroom + sofa bed · 21 m² · fireplace",de:"1 Schlafzimmer + Schlafsofa · 21 m² · Kamin"},
@@ -316,16 +417,68 @@ const IDEAS=[
  ["Rovaniemi & Lapland","Rovaniemi & Lappland","Night train or a short flight from Helsinki. Reindeer, huskies, the Arctic Circle.","Nachtzug oder kurzer Flug ab Helsinki. Rentiere, Huskys, Polarkreis.","https://www.visitrovaniemi.fi/","Visit Rovaniemi"],
  ["Lake Saimaa & Savonlinna","Saimaa & Savonlinna","Finland's largest lake and Olavinlinna castle.","Finnlands größter See und die Burg Olavinlinna.","https://visitsaimaa.fi/en/","Visit Saimaa"]
 ];
+// Translations for fi / sv / ru / fr (en and de stay inline above)
+const X={
+fi:{boats:{"21":"1 makuuhuone + vuodesohva · 21 m² · takka","24":"1 makuuhuone + vuodesohva · 24 m² · premium-keittiö","24s":"Kuten 24/4 Luxe + ulkoporeallas","36":"2 makuuhuonetta + vuodesohva · 36 m² · takka","42-6":"2 makuuhuonetta + vuodesohva · 42 m² · 30 m² kattoterassi","42-8":"2 makuuhuonetta (toisessa 4 yhden hengen sänkyä) + vuodesohva · 42 m² · kattoterassi"},
+ addons:{linen:["Liinavaatteet ja pyyhkeet","30 € / henkilö"],sup:["SUP-lauta","25 € / päivä"],kayak:["Kumikajakki, 1–2 henkeä","25 € / päivä"],bike:["Polkupyörä (fatbike, maastopyörä tai retkipyörä)","25 € / päivä"],dinghy:["Kumivene, 2,5 hv perämoottori","42 € / päivä"],rib:["Alumiini-RIB, 9,9 / 15 hv perämoottori","85 € / päivä"],fishing:["Kalastusvälineet, kalastuslupa tai paikallinen opas","Kaikille tasoille"],wood:["Lisää saunapuita","15 € / 40 l säkki"],earlyin:["Aikaisempi saapuminen (ennen klo 15)","100 € / tunti"],latein:["Myöhäinen saapuminen (klo 18–20)","100 €"],late:["Myöhäinen lähtö (klo 10 jälkeen)","100 € / tunti"],skipper:["Lisää kipparikoulutusta","75 € / tunti"]},
+ interests:{sauna:"Sauna ja uinti",fishing:"Kalastus",nature:"Luonto ja kansallispuisto",active:"Melonta ja pyöräily",kids:"Lasten kanssa",food:"Paikallinen ruoka",golf:"Golf"},
+ tips:{sauna:"Iltasauna ja sitten järveen",fishing:"Haukea ja ahventa kaislikkoisissa lahdissa",nature:"Harjukävely ja marjastus",active:"SUP tai kajakki rauhallisessa lahdessa",kids:"Hiekkaranta ja retket jollalla",food:"Tilapuoti: marjoja, liköörejä",golf:"Vierumäen golf, 4 km rantautumispaikasta"},
+ routes:{short:{t:"Lyhyt loma Ruotsalaisella",s:"Ensimmäinen maistiainen asuntoveneelämästä",d:[["Saapuminen ja ensimmäinen ilta","Saapuminen klo 15–18, kipparikoulutus, lyhyt ajo rauhalliseen lahteen, ensimmäinen sauna ja uinti."],["Ruotsalaisen saaret","Uintia, SUP tai kajakki, kalastusta saarten ja lahtien lomassa."],["Uusi lahti, uusi saari","Lounas kannella, iltasauna; kesä- ja heinäkuussa yöttömät yöt."]]},
+  mid:{t:"Kalkkisten sulun kautta Päijänteelle",s:"Kanava, sulku ja ensimmäiset harjusaaret",d:[["Saapuminen ja Ruotsalainen","Kipparikoulutus, ensimmäinen ilta Ruotsalaisella."],["Länteen Kalkkisten kanavalle","Päivän ajo vesireittiä pitkin; tilapuoti Kalkkisissa."],["Päijänteelle","Sulun läpi — Pulkkilanharjun saaret, rannat ja kävely harjulla."],["Takaisin sulun läpi","Yöpyminen kanavan itäpuolen rauhallisilla vesillä."],["Viimeinen lahti Ruotsalaisella","Viimeinen lahti, viimeinen saunailta."]]},
+  long:{t:"Päijänteen kansallispuisto ja Kelvenne",s:"Koko elämys — suosituksemme",d:[["Saapuminen ja iltasauna","Kipparikoulutus, ensimmäinen yö lähellä satamaa."],["Ruotsalainen","Rauhallinen lahti yöksi."],["Kalkkisten sulku","Sulun läpi Päijänteelle."],["Kelvenne","Hiekkarannat, laguunilahdet, kirkas vesi."],["Kelvenne","Harjupatikka, uintia, saunaa."],["Pulkkilanharju ja Paatsalo","Harjusaaret ja Paatsalon näköalapaikka Tehinselälle."],["Takaisin Ruotsalaiselle","Takaisin sulun läpi viimeiseksi illaksi."]]}},
+ spare:["Varapäivä","Tuulen tai laiskottelun varalle — lisää rantoja, lisää saunaa. Ehdotamme paikkoja veneen luovutuksessa."],
+ back:["Paluu Heinolaan","Palautus klo 10 mennessä täysin tankein."],flights:"Lennot Helsinkiin",
+ ideas:[["Helsinki, 2 yötä","Design District, Suomenlinna, Löylyn sauna meren rannalla."],["Päiväretki Porvooseen","Vanha kaupunki ja punaiset jokirannan aitat, alle tunnin päässä Helsingistä."],["Rovaniemi ja Lappi","Yöjunalla tai lyhyellä lennolla Helsingistä. Poroja, huskyja, napapiiri."],["Saimaa ja Savonlinna","Suomen suurin järvi ja Olavinlinna."]]},
+sv:{boats:{"21":"1 sovrum + bäddsoffa · 21 m² · öppen spis","24":"1 sovrum + bäddsoffa · 24 m² · premiumkök","24s":"Som 24/4 Luxe + bubbelpool utomhus","36":"2 sovrum + bäddsoffa · 36 m² · öppen spis","42-6":"2 sovrum + bäddsoffa · 42 m² · 30 m² takterrass","42-8":"2 sovrum (ett med 4 enkelsängar) + bäddsoffa · 42 m² · takterrass"},
+ addons:{linen:["Sängkläder och handdukar","30 € per person"],sup:["SUP-bräda","25 € per dag"],kayak:["Uppblåsbar kajak, 1–2 personer","25 € per dag"],bike:["Cykel (fatbike, mountainbike eller turcykel)","25 € per dag"],dinghy:["Gummibåt med 2,5 hk utombordare","42 € per dag"],rib:["Aluminium-RIB, 9,9 / 15 hk utombordare","85 € per dag"],fishing:["Fiskeutrustning, fiskekort eller lokal guide","För alla nivåer"],wood:["Extra bastuved","15 € per 40 l säck"],earlyin:["Tidigare incheckning (före 15)","100 € per timme"],latein:["Senare incheckning (18–20)","100 €"],late:["Senare utcheckning (efter 10)","100 € per timme"],skipper:["Extra skepparutbildning","75 € per timme"]},
+ interests:{sauna:"Bastu och bad",fishing:"Fiske",nature:"Natur och nationalpark",active:"Paddling och cykling",kids:"Med barn",food:"Lokal mat",golf:"Golf"},
+ tips:{sauna:"Kvällsbastu, sedan i sjön",fishing:"Gädda och abborre i vassvikarna",nature:"Åsvandring och bärplockning",active:"SUP eller kajak i en lugn vik",kids:"Sandstrand och jolleturer",food:"Gårdsbutik: bär, likörer",golf:"Golf i Vierumäki, 4 km från en förtöjningsplats"},
+ routes:{short:{t:"Kort semester på Ruotsalainen",s:"En första smak av husbåtslivet",d:[["Incheckning och första kvällen","Incheckning 15–18, skepparutbildning, kort tur till en lugn vik, första bastun och ett dopp."],["Öarna i Ruotsalainen","Bad, SUP eller kajak, fiske bland öar och vikar."],["En ny vik, en ny ö","Lunch på däck, kvällsbastu; ljusa nätter i juni och juli."]]},
+  mid:{t:"Genom Kalkkinen-slussen till Päijänne",s:"Kanal, sluss och de första åsöarna",d:[["Incheckning och Ruotsalainen","Skepparutbildning, första kvällen på Ruotsalainen."],["Västerut till Kalkkinen-kanalen","En dags färd längs vattenleden; gårdsbutik i Kalkkinen."],["Ut på Päijänne","Genom slussen — Pulkkilanharjus åsöar, stränder och en promenad på åsen."],["Tillbaka genom slussen","Övernattning på de lugna vattnen öster om kanalen."],["Sista viken på Ruotsalainen","En sista vik, en sista bastukväll."]]},
+  long:{t:"Päijänne nationalpark och Kelvenne",s:"Hela upplevelsen — vår rekommendation",d:[["Incheckning och kvällsbastu","Skepparutbildning, första natten nära hamnen."],["Ruotsalainen","En lugn vik för natten."],["Kalkkinen-slussen","Genom slussen ut på Päijänne."],["Kelvenne","Sandstränder, lagunvikar, kristallklart vatten."],["Kelvenne","Vandring längs åsen, bad, bastu."],["Pulkkilanharju och Paatsalo","Åsöar och utsiktsplatsen Paatsalo över Tehinselkä."],["Tillbaka till Ruotsalainen","Tillbaka genom slussen för en sista kväll."]]}},
+ spare:["Reservdag","För blåsigt väder eller en lat dag — fler stränder, mer bastu. Vi föreslår platser vid överlämningen."],
+ back:["Tillbaka till Heinola","Återlämning senast 10, med fulla tankar."],flights:"Flyg till Helsingfors",
+ ideas:[["Helsingfors, 2 nätter","Design District, sjöfästningen Sveaborg, bastun Löyly vid havet."],["Dagsutflykt till Borgå","Gamla stan med röda strandbodar vid ån, under en timme från Helsingfors."],["Rovaniemi och Lappland","Nattåg eller kort flyg från Helsingfors. Renar, huskies, polcirkeln."],["Saimen och Nyslott","Finlands största sjö och Olofsborg."]]},
+ru:{boats:{"21":"1 спальня + диван-кровать · 21 м² · камин","24":"1 спальня + диван-кровать · 24 м² · кухня премиум-класса","24s":"Как 24/4 Luxe + джакузи на палубе","36":"2 спальни + диван-кровать · 36 м² · камин","42-6":"2 спальни + диван-кровать · 42 м² · терраса на крыше 30 м²","42-8":"2 спальни (в одной 4 односпальные кровати) + диван-кровать · 42 м² · терраса на крыше"},
+ addons:{linen:["Постельное бельё и полотенца","30 € с человека"],sup:["SUP-доска","25 € в день"],kayak:["Надувной каяк, 1–2 человека","25 € в день"],bike:["Велосипед (фэтбайк, горный или туристический)","25 € в день"],dinghy:["Надувная лодка с мотором 2,5 л. с.","42 € в день"],rib:["Алюминиевая RIB, мотор 9,9 / 15 л. с.","85 € в день"],fishing:["Снасти, лицензия на рыбалку или местный гид","Для любого уровня"],wood:["Дополнительные дрова для сауны","15 € за мешок 40 л"],earlyin:["Ранний заезд (до 15:00)","100 € в час"],latein:["Поздний заезд (18:00–20:00)","100 €"],late:["Поздний выезд (после 10:00)","100 € в час"],skipper:["Дополнительный инструктаж шкипера","75 € в час"]},
+ interests:{sauna:"Сауна и купание",fishing:"Рыбалка",nature:"Природа и нацпарк",active:"Каяк и велосипед",kids:"С детьми",food:"Местная еда",golf:"Гольф"},
+ tips:{sauna:"Вечерняя сауна, потом в озеро",fishing:"Щука и окунь в заливах у тростника",nature:"Прогулка по гряде и сбор ягод",active:"SUP или каяк в тихом заливе",kids:"Песчаный пляж и прогулки на шлюпке",food:"Фермерская лавка: ягоды, ликёры",golf:"Гольф в Вьерумяки, 4 км от стоянки"},
+ routes:{short:{t:"Короткий отдых на озере Руотсалайнен",s:"Первое знакомство с жизнью на хаусботе",d:[["Заезд и первый вечер","Заезд 15:00–18:00, инструктаж шкипера, короткий переход в тихий залив, первая сауна и купание."],["Острова Руотсалайнена","Купание, SUP или каяк, рыбалка среди островов и заливов."],["Новый залив, новый остров","Обед на палубе, вечерняя сауна; в июне и июле белые ночи."]]},
+  mid:{t:"Через шлюз Калккинен на Пяйянне",s:"Канал, шлюз и первые острова на гряде",d:[["Заезд и Руотсалайнен","Инструктаж шкипера, первый вечер на Руотсалайнене."],["На запад к каналу Калккинен","День пути по водному маршруту; фермерская лавка в Калккинене."],["На Пяйянне","Через шлюз — острова гряды Пулккиланхарью, пляжи и прогулка по гряде."],["Обратно через шлюз","Ночёвка на тихой воде к востоку от канала."],["Последний залив на Руотсалайнене","Последний залив, последний вечер с сауной."]]},
+  long:{t:"Национальный парк Пяйянне и Кельвенне",s:"Полная программа — наша рекомендация",d:[["Заезд и вечерняя сауна","Инструктаж шкипера, первая ночь недалеко от гавани."],["Руотсалайнен","Тихий залив на ночь."],["Шлюз Калккинен","Через шлюз на Пяйянне."],["Кельвенне","Песчаные пляжи, лагуны, кристально чистая вода."],["Кельвенне","Прогулка по гряде, купание, сауна."],["Пулккиланхарью и Паатсало","Острова гряды и смотровая площадка Паатсало над плёсом Техинселькя."],["Обратно на Руотсалайнен","Обратно через шлюз на последний вечер."]]}},
+ spare:["Запасной день","На случай ветра или ленивого дня — больше пляжей, больше сауны. Места подскажем при передаче лодки."],
+ back:["Возвращение в Хейнолу","Сдача лодки до 10:00 с полными баками."],flights:"Рейсы в Хельсинки",
+ ideas:[["Хельсинки, 2 ночи","Дизайн-квартал, морская крепость Суоменлинна, сауна Löyly у моря."],["Поездка в Порвоо на день","Старый город с красными амбарами у реки, меньше часа от Хельсинки."],["Рованиеми и Лапландия","Ночной поезд или короткий перелёт из Хельсинки. Олени, хаски, Полярный круг."],["Сайма и Савонлинна","Самое большое озеро Финляндии и крепость Олавинлинна."]]},
+fr:{boats:{"21":"1 chambre + canapé-lit · 21 m² · cheminée","24":"1 chambre + canapé-lit · 24 m² · cuisine haut de gamme","24s":"Comme le 24/4 Luxe + jacuzzi extérieur","36":"2 chambres + canapé-lit · 36 m² · cheminée","42-6":"2 chambres + canapé-lit · 42 m² · toit-terrasse de 30 m²","42-8":"2 chambres (dont une avec 4 lits simples) + canapé-lit · 42 m² · toit-terrasse"},
+ addons:{linen:["Linge de lit et serviettes","30 € par personne"],sup:["Planche SUP","25 € par jour"],kayak:["Kayak gonflable, 1–2 personnes","25 € par jour"],bike:["Vélo (fatbike, VTT ou randonnée)","25 € par jour"],dinghy:["Annexe gonflable, moteur hors-bord 2,5 ch","42 € par jour"],rib:["RIB aluminium, moteur 9,9 / 15 ch","85 € par jour"],fishing:["Matériel de pêche, permis ou guide local","Pour tous les niveaux"],wood:["Bois supplémentaire pour le sauna","15 € le sac de 40 l"],earlyin:["Arrivée anticipée (avant 15 h)","100 € par heure"],latein:["Arrivée tardive (18 h–20 h)","100 €"],late:["Départ tardif (après 10 h)","100 € par heure"],skipper:["Formation au pilotage supplémentaire","75 € par heure"]},
+ interests:{sauna:"Sauna et baignade",fishing:"Pêche",nature:"Nature et parc national",active:"Pagaie et vélo",kids:"En famille",food:"Cuisine locale",golf:"Golf"},
+ tips:{sauna:"Sauna du soir, puis plongeon dans le lac",fishing:"Brochet et perche dans les baies de roseaux",nature:"Balade sur l'esker et cueillette de baies",active:"SUP ou kayak dans une baie calme",kids:"Plage de sable et sorties en annexe",food:"Boutique de ferme : baies, liqueurs",golf:"Golf de Vierumäki, à 4 km d'un mouillage"},
+ routes:{short:{t:"Court séjour sur le lac Ruotsalainen",s:"Un premier goût de la vie en house-boat",d:[["Arrivée et première soirée","Arrivée de 15 h à 18 h, formation au pilotage, courte navigation vers une baie calme, premier sauna et baignade."],["Les îles du lac Ruotsalainen","Baignade, SUP ou kayak, pêche entre les îles et les baies."],["Une autre baie, une autre île","Déjeuner sur le pont, sauna du soir ; nuits blanches en juin et juillet."]]},
+  mid:{t:"Par l'écluse de Kalkkinen jusqu'au Päijänne",s:"Canal, écluse et premières îles de l'esker",d:[["Arrivée et lac Ruotsalainen","Formation au pilotage, première soirée sur le Ruotsalainen."],["Cap à l'ouest vers le canal de Kalkkinen","Une journée de navigation sur la voie d'eau ; boutique de ferme à Kalkkinen."],["Sur le lac Päijänne","Par l'écluse — îles de l'esker de Pulkkilanharju, plages et balade sur la crête."],["Retour par l'écluse","Nuit sur les eaux calmes à l'est du canal."],["Dernière baie sur le Ruotsalainen","Une dernière baie, une dernière soirée sauna."]]},
+  long:{t:"Parc national du Päijänne et Kelvenne",s:"L'expérience complète — notre recommandation",d:[["Arrivée et sauna du soir","Formation au pilotage, première nuit près du port."],["Lac Ruotsalainen","Une baie calme pour la nuit."],["Écluse de Kalkkinen","Par l'écluse jusqu'au lac Päijänne."],["Kelvenne","Plages de sable, baies-lagunes, eau cristalline."],["Kelvenne","Randonnée sur l'esker, baignade, sauna."],["Pulkkilanharju et Paatsalo","Îles de l'esker et point de vue de Paatsalo sur le Tehinselkä."],["Retour au lac Ruotsalainen","Retour par l'écluse pour une dernière soirée."]]}},
+ spare:["Jour de réserve","Pour le vent ou une journée tranquille — plus de plages, plus de sauna. Nous vous suggérons des lieux à la remise du bateau."],
+ back:["Retour à Heinola","Restitution avant 10 h, réservoirs pleins."],flights:"Vols pour Helsinki",
+ ideas:[["Helsinki, 2 nuits","Design District, forteresse maritime de Suomenlinna, sauna Löyly au bord de la mer."],["Excursion à Porvoo","Vieille ville aux entrepôts rouges au bord de la rivière, à moins d'une heure d'Helsinki."],["Rovaniemi et la Laponie","Train de nuit ou vol court depuis Helsinki. Rennes, huskies, cercle polaire."],["Le lac Saimaa et Savonlinna","Le plus grand lac de Finlande et le château d'Olavinlinna."]]}
+};
+const LANGS=["en","de","fi","sv","ru","fr"];
+const LOC={en:"en-GB",de:"de-DE",fi:"fi-FI",sv:"sv-SE",ru:"ru-RU",fr:"fr-FR"};
+const xl=()=>X[st.lang];
+const bDesc=b=>b[st.lang]||xl().boats[b.id];
+const aTxt=a=>a[st.lang]||xl().addons[a.id];
+const iName=k=>xl()?xl().interests[k]:INTERESTS[k][li()];
+const tipTxt=t=>xl()?xl().tips[t]:TIPS[t][li()];
 const AVAIL_URL="https://htyyxhgbpegknsndocjy.supabase.co/functions/v1/availability";
 const $=s=>document.querySelector(s);
 const st={avail:null,availKey:"",lang:"en",interests:new Set(),boat:null,addons:new Set(["linen"]),qty:{},img:{},showAll:false};
-try{const l=localStorage.getItem("hb-lang");if(l)st.lang=l}catch(e){}
-if(navigator.language&&navigator.language.startsWith("de")&&!(()=>{try{return localStorage.getItem("hb-lang")}catch(e){return null}})())st.lang="de";try{const q=new URLSearchParams(location.search).get("lang");if(q==="de"||q==="en")st.lang=q}catch(e){}
-const L=()=>T[st.lang],li=()=>st.lang==="en"?0:1;
-const fmt=n=>st.lang==="de"?n.toLocaleString("de-DE",{maximumFractionDigits:2})+" €":"€"+n.toLocaleString("en-GB",{maximumFractionDigits:2});
+{let saved=null;try{saved=localStorage.getItem("hb-lang")}catch(e){}
+ const nav=(navigator.language||"").slice(0,2).toLowerCase();
+ if(LANGS.includes(saved))st.lang=saved;else if(LANGS.includes(nav))st.lang=nav;
+ try{const q=(new URLSearchParams(location.search).get("lang")||"").slice(0,2).toLowerCase();if(LANGS.includes(q))st.lang=q}catch(e){}}
+const L=()=>T[st.lang],li=()=>st.lang==="de"?1:0;
+const fmt=n=>st.lang==="en"?"€"+n.toLocaleString("en-GB",{maximumFractionDigits:2}):n.toLocaleString(LOC[st.lang],{maximumFractionDigits:2})+" €";
 const addDays=(iso,n)=>{const d=new Date(iso+"T12:00");d.setDate(d.getDate()+n);return d};
 const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-const loc=()=>st.lang==="de"?"de-DE":"en-GB";
+const loc=()=>LOC[st.lang];
 const nice=d=>d.toLocaleDateString(loc(),{weekday:"short",day:"numeric",month:"short"});
 const sub=(s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
 function fill(sel,from,to,def,list){const e=$(sel);e.innerHTML="";(list||Array.from({length:to-from+1},(_,i)=>i+from)).forEach(v=>{const o=new Option(v,v);if(v===def)o.selected=true;e.add(o)})}
@@ -337,26 +490,26 @@ function boatCost(b){let t=0;for(let i=0;i<nights();i++){const g=addDays($("#sta
 function best(){return BOATS.filter(b=>b.cap>=people()&&availOf(b)!==0).sort((a,b)=>a.cap-b.cap||a.wd-b.wd)[0]}
 const qty=a=>st.qty[a.id]||1;
 function aCost(a){if(a.price==null)return null;return a.unit==="person"?a.price*people():a.unit==="day"?a.price*nights()*qty(a):a.unit==="each"?a.price*qty(a):a.price}
-const aName=a=>a[st.lang][0]+(a.max>1&&qty(a)>1?" × "+qty(a):"");
+const aName=a=>aTxt(a)[0]+(a.max>1&&qty(a)>1?" × "+qty(a):"");
 
 function renderStatic(){
  document.documentElement.lang=st.lang;
  document.querySelectorAll("[data-t]").forEach(e=>{const v=L()[e.dataset.t];if(v!=null)e.textContent=v});
  document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===st.lang));
  [["#cancList","cancL"],["#incList","incL"],["#excList","excL"],["#arrList","arrL"],["#ruleList","ruleL"],["#onbList","onbL"],["#brgList","brgL"]].forEach(([s,k])=>$(s).innerHTML=L()[k].map(x=>`<li>${x}</li>`).join(""));
- $("#ideas").innerHTML=IDEAS.map(i=>`<div><b>${i[li()]}</b>${i[2+li()]}<br><a href="${i[4]}" target="_blank" rel="noopener">${i[5]} ↗</a></div>`).join("")+
-  `<div><b>${st.lang==="de"?"Flüge nach Helsinki":"Flights to Helsinki"}</b><a id="flightLink" target="_blank" rel="noopener">Google Flights ↗</a></div>`;
+ $("#ideas").innerHTML=IDEAS.map((i,n)=>`<div><b>${xl()?xl().ideas[n][0]:i[li()]}</b>${xl()?xl().ideas[n][1]:i[2+li()]}<br><a href="${i[4]}" target="_blank" rel="noopener">${i[5]} ↗</a></div>`).join("")+
+  `<div><b>${xl()?xl().flights:st.lang==="de"?"Flüge nach Helsinki":"Flights to Helsinki"}</b><a id="flightLink" target="_blank" rel="noopener">Google Flights ↗</a></div>`;
  $("#bookBtn").textContent=L().book;$("#waBtn").textContent=L().wa;$("#reqBtn").textContent=L().req;$("#copyReq").textContent=L().copy;$("#bookNote").textContent=L().bookNote;$("#mBook").textContent=L().seeTrip;
 }
 const RTID={"116661":"21","122200":"24","122201":"24s","122199":"36","122202":"42-6","149447":"42-8"};function boatIdFor(name){const n=(name||"").toLowerCase();if(n.includes("spa"))return "24s";if(n.includes("42/8")||n.includes("42 8"))return "42-8";if(n.includes("42"))return "42-6";if(n.includes("36"))return "36";if(n.includes("24"))return "24";if(n.includes("21"))return "21";return null}
 let availTimer=null;
 function loadAvail(){const key=[$("#start").value,nights(),$("#adults").value,$("#kids").value].join("|");if(key===st.availKey)return;st.availKey=key;st.avail=null;
- clearTimeout(availTimer);availTimer=setTimeout(async()=>{try{const r=await fetch(`${AVAIL_URL}?arrival=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}&children=${$("#kids").value}&lang=${st.lang}`);
+ clearTimeout(availTimer);availTimer=setTimeout(async()=>{try{const r=await fetch(`${AVAIL_URL}?arrival=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}&children=${$("#kids").value}&lang=${st.lang==="de"?"de":"en"}`);
   if(!r.ok)return;const j=await r.json();if(st.availKey!==key)return;const m={};(j.rooms||[]).forEach(x=>{const id=RTID[String(x.roomTypeId)]||boatIdFor(x.name);if(id)m[id]=x});if(!Object.keys(m).length)return;st.avail={map:m,ok:true};update()}catch(e){}},400)}
 const DIRECT_RESERVE={"21":1};function availOf(b){if(!st.avail)return undefined;const x=st.avail.map[b.id];const v=x?x.available:0;const r=DIRECT_RESERVE[b.id]||0;if(r)return v>0?v+r:undefined;return v}
 function renderInterests(){
  $("#interests").innerHTML="";
- Object.entries(INTERESTS).forEach(([k,v])=>{const b=document.createElement("button");b.className="chip";b.textContent=v[li()];b.setAttribute("aria-pressed",st.interests.has(k));
+ Object.entries(INTERESTS).forEach(([k,v])=>{const b=document.createElement("button");b.className="chip";b.textContent=iName(k);b.setAttribute("aria-pressed",st.interests.has(k));
   b.onclick=()=>{st.interests.has(k)?st.interests.delete(k):st.interests.add(k);update()};$("#interests").appendChild(b)});
 }
 function renderBoats(){
@@ -365,7 +518,7 @@ function renderBoats(){
  BOATS.forEach(b=>{const av=availOf(b),booked=av===0&&b.cap>=people(),off=b.cap<people()||booked,i=st.img[b.id]||0,el=document.createElement("div");
   el.className="boat"+(off?" off":"");el.setAttribute("role","button");el.setAttribute("aria-pressed",st.boat===b.id);
   el.innerHTML=`<div class="ph"><img src="${b.img[i]}" alt="${b.name}" loading="lazy">${bb&&bb.id===b.id?`<span class="tagwrap"><span class="tag rec">${L().fit}</span></span>`:""}${b.img.length>1?`<button class="nav">${i+1}/${b.img.length} ›</button>`:""}</div>
-  <div class="bd"><b>${b.name}</b><span class="meta">${L().upto} ${b.cap} · ${b[st.lang]}</span>
+  <div class="bd"><b>${b.name}</b><span class="meta">${L().upto} ${b.cap} · ${bDesc(b)}</span>
   ${av>0?`<span class="tag us" style="margin-top:6px">${av===1?L().last1:sub(L().leftN,{n:av})}</span>`:""}<div class="p">${booked?`<span class="meta">${L().booked}</span>`:off?`<span class="meta">${L().toosmall}</span>`:fmt(boatCost(b))+` <span class="r">${sub(L().forN,{n:nights()})}</span>`}</div>
   <span class="r">${fmt(b.wd)} ${L().wd} · ${fmt(b.we)} ${L().we}</span></div>`;
   const nav=el.querySelector(".nav");if(nav)nav.onclick=e=>{e.stopPropagation();st.img[b.id]=(i+1)%b.img.length;renderBoats()};
@@ -380,34 +533,37 @@ function renderAddons(){
  $("#addons").innerHTML="";
  shown.forEach(a=>{const r=a.tags.some(t=>st.interests.has(t)),row=document.createElement("label");row.className="addon";
   const sel=a.max>1?`<select aria-label="qty">${Array.from({length:a.max},(_,i)=>`<option ${qty(a)===i+1?"selected":""}>${i+1}</option>`).join("")}</select>`:"";
-  row.innerHTML=`<input type="checkbox" ${st.addons.has(a.id)?"checked":""}><span class="n">${a[st.lang][0]}${r?` <span class="tag rec">${L().forYou}</span>`:""}<small>${a[st.lang][1]}${a.unit==="day"?" · "+nights()+" "+L().days:""}</small></span>${sel}<span>${a.price==null?`<span class="onreq">${L().onreq}</span>`:fmt(aCost(a))}</span>`;
+  row.innerHTML=`<input type="checkbox" ${st.addons.has(a.id)?"checked":""}><span class="n">${aTxt(a)[0]}${r?` <span class="tag rec">${L().forYou}</span>`:""}<small>${aTxt(a)[1]}${a.unit==="day"?" · "+nights()+" "+L().days:""}</small></span>${sel}<span>${a.price==null?`<span class="onreq">${L().onreq}</span>`:fmt(aCost(a))}</span>`;
   const s=row.querySelector("select");if(s){s.onclick=e=>e.preventDefault();s.onchange=e=>{st.qty[a.id]=+e.target.value;st.addons.add(a.id);update()}}
   row.querySelector("input").onchange=e=>{e.target.checked?st.addons.add(a.id):st.addons.delete(a.id);update()};
   $("#addons").appendChild(row)});
  $("#moreBtn").textContent=st.showAll?L().showLess:L().showAll+" ("+ADDONS.length+")";
 }
-function route(){const n=nights();return n<=4?R.short:n<=6?R.mid:R.long}
+function routeKey(){const n=nights();return n<=4?"short":n<=6?"mid":"long"}
+function route(){return R[routeKey()]}
 function plan(){
- const r=route(),n=nights(),days=[];
- for(let i=0;i<n;i++){const x=r.d[i];days.push(x?{t:x[li()*2],p:x[1+li()*2],tips:x[4]}:{t:SPARE[li()*2],p:SPARE[1+li()*2],tips:["sauna","active"]})}
- days.push({t:st.lang==="de"?"Rückkehr nach Heinola":"Back to Heinola",p:st.lang==="de"?"Rückgabe bis 10 Uhr, mit vollen Tanks.":"Return by 10:00, with full tanks.",tips:[]});
- return {r,days};
+ const k=routeKey(),r=R[k],n=nights(),days=[],x2=xl();
+ for(let i=0;i<n;i++){const x=r.d[i];
+  if(x2)days.push(x?{t:x2.routes[k].d[i][0],p:x2.routes[k].d[i][1],tips:x[4]}:{t:x2.spare[0],p:x2.spare[1],tips:["sauna","active"]});
+  else days.push(x?{t:x[li()*2],p:x[1+li()*2],tips:x[4]}:{t:SPARE[li()*2],p:SPARE[1+li()*2],tips:["sauna","active"]})}
+ days.push(x2?{t:x2.back[0],p:x2.back[1],tips:[]}:{t:st.lang==="de"?"Rückkehr nach Heinola":"Back to Heinola",p:st.lang==="de"?"Rückgabe bis 10 Uhr, mit vollen Tanks.":"Return by 10:00, with full tanks.",tips:[]});
+ return {r,k,days};
 }
 function renderPlan(){
- const {r,days}=plan();$("#routeTitle").textContent=r.t[li()];$("#routeSub").textContent=r.s[li()];
+ const {r,k,days}=plan(),x2=xl();$("#routeTitle").textContent=x2?x2.routes[k].t:r.t[li()];$("#routeSub").textContent=x2?x2.routes[k].s:r.s[li()];
  $("#plan").innerHTML=days.map((d,i)=>{const dt=addDays($("#start").value,i),tips=d.tips.filter(t=>st.interests.has(t));
-  return `<div class="day"><div class="d">${dt.toLocaleDateString(loc(),{weekday:"short"})}<b>${dt.getDate()}</b>${dt.toLocaleDateString(loc(),{month:"short"})}</div><div><h3>${d.t}</h3><p>${d.p}</p>${tips.length?`<div class="tips">${tips.map(t=>`<span>${TIPS[t][li()]}</span>`).join("")}</div>`:""}</div></div>`}).join("");
+  return `<div class="day"><div class="d">${dt.toLocaleDateString(loc(),{weekday:"short"})}<b>${dt.getDate()}</b>${dt.toLocaleDateString(loc(),{month:"short"})}</div><div><h3>${d.t}</h3><p>${d.p}</p>${tips.length?`<div class="tips">${tips.map(t=>`<span>${tipTxt(t)}</span>`).join("")}</div>`:""}</div></div>`}).join("");
 }
 function totals(){
  const b=BOATS.find(x=>x.id===st.boat),sel=ADDONS.filter(a=>st.addons.has(a.id));
- const ad=sel.filter(a=>a.price!=null).map(a=>[aName(a),aCost(a)]),req=sel.filter(a=>a.price==null).map(a=>a[st.lang][0]);
+ const ad=sel.filter(a=>a.price!=null).map(a=>[aName(a),aCost(a)]),req=sel.filter(a=>a.price==null).map(a=>aTxt(a)[0]);
  const boat=b?boatCost(b):0,pet=+$("#dog").value?140:0;
  return {b,boat,ad,req,pet,total:boat+pet+ad.reduce((s,x)=>s+x[1],0)};
 }
-function bookUrl(){return `https://fi-ibe.hopenapi.com/booking2/hotel/index.html?providerId=16401&language=${st.lang==="de"?"de":"en"}&currency=EUR&date=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}`}
+function bookUrl(){return `https://fi-ibe.hopenapi.com/booking2/hotel/index.html?providerId=16401&language=${st.lang}&currency=EUR&date=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}`}
 function reqText(){const t=totals();return sub(L().mail,{boat:t.b?t.b.name:"—",d:$("#start").value,n:nights(),
  g:sub(L().guests,{a:$("#adults").value,k:$("#kids").value})+(+$("#dog").value?L().pet1:""),
- x:[...t.ad.map(a=>a[0]),...t.req].join(", ")||"—",i:[...st.interests].map(k=>INTERESTS[k][li()]).join(", ")||"—",t:fmt(t.total)})}
+ x:[...t.ad.map(a=>a[0]),...t.req].join(", ")||"—",i:[...st.interests].map(k=>iName(k)).join(", ")||"—",t:fmt(t.total)})}
 function renderSum(){
  const t=totals(),end=addDays($("#start").value,nights());
  let h=`<div class="sm">${nice(addDays($("#start").value,0))} – ${nice(end)} · ${nights()} ${L().nightsL}<br>${sub(L().guests,{a:$("#adults").value,k:$("#kids").value})}${+$("#dog").value?L().pet1:""}</div>`;
