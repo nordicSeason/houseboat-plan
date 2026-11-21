@@ -196,7 +196,7 @@ details.after summary{font:500 18px Fraunces,serif;cursor:pointer}
     <h2 data-t="trip"></h2>
     <div id="sum"></div>
     <div class="ctas">
-      <a class="btn" id="bookBtn" target="_blank" rel="noopener"></a>
+      <a class="btn" id="bookBtn" target="_top"></a>
       <a class="btn wa" id="waBtn" target="_blank" rel="noopener"></a>
       <button class="btn ghost" id="reqBtn"></button>
     </div>
@@ -210,7 +210,7 @@ details.after summary{font:500 18px Fraunces,serif;cursor:pointer}
   <div class="note" hidden><b>Prototype — owner notes.</b> Prices: Houseboat-Finland Pricelist 2027 (matches booking engine 14.11.2026). Terms: Rental Guide 2027. Routes: Cruising routes 2027. Packing list: Rental Guide 2027 (+ swimwear/sun cream, plug adapter added). Photos: agency photo pack. "Book online" opens houseboat.fi booking with dates and adults pre-filled (tested). Live availability: Supabase function "availability" → Exely Search API (needs EXELY_CLIENT_ID / EXELY_CLIENT_SECRET secrets; blocked inside this preview, works on houseboat.fi). Payment & cancellation: from Exely (Early Bird settings + "Main rule" cancellation policy, 14.11.2026).</div>
 </aside>
 </main>
-<div id="mbar"><span id="mtot"></span><a class="btn" id="mBook" target="_blank" rel="noopener"></a></div>
+<div id="mbar"><span id="mtot"></span><a class="btn" id="mBook" target="_top"></a></div>
 
 <script>
 const T={
@@ -596,7 +596,8 @@ function totals(){
  const boat=b?boatCost(b):0,pet=+$("#dog").value?140:0;
  return {b,boat,ad,req,pet,total:boat+pet+ad.reduce((s,x)=>s+x[1],0)};
 }
-function bookUrl(){return `https://fi-ibe.hopenapi.com/booking2/hotel/index.html?providerId=16401&language=${st.lang==="nb"?"sv":st.lang}&currency=EUR&date=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}`}
+const BOOK_PATH={en:"en-gb",de:"de-de",fi:"fi-fi",sv:"sv-se",ru:"ru-ru",fr:"fr-fr",nb:"sv-se"};
+function bookUrl(){return `https://houseboat.fi/${BOOK_PATH[st.lang]||"en-gb"}/booking/?date=${$("#start").value}&nights=${nights()}&adults=${$("#adults").value}`}
 function reqText(){const t=totals();return sub(L().mail,{boat:t.b?t.b.name:"—",d:$("#start").value,n:nights(),
  g:sub(L().guests,{a:$("#adults").value,k:$("#kids").value})+(+$("#dog").value?L().pet1:""),
  x:[...t.ad.map(a=>a[0]),...t.req].join(", ")||"—",i:[...st.interests].map(k=>iName(k)).join(", ")||"—",t:fmt(t.total)})}
